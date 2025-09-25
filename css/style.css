@@ -1,0 +1,60 @@
+:root{
+    /* Paleta de colores principal de la página */
+    --amarillo: #F4D03F;    
+    --rosado: #F8BBD9;       
+    --morado: #8E44AD;       
+    --negro: #333;         
+    --rojo: #E74C3C;         
+    
+}
+
+*{
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+header {
+    background-color: var(--negro);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 20px; 
+}
+
+
+.parte-superior {
+    display: contents; 
+}
+
+.parte-superior img{
+    width: 200px;
+}   
+
+
+header nav ul {
+    list-style: none; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center;
+}
+
+header nav {
+    margin-right: 15%;
+}
+
+header nav a{
+    text-decoration: none;
+    font-size: 16px;
+    padding: 15px 25px;
+    background-color: var(--amarillo); 
+    color: var(--negro); 
+    font-weight: bold; 
+    border-radius: 4px; 
+}
+
+header nav a:hover{
+    background-color: #e4ca64;
+    color: white;
+    font-weight: bold;
+}
