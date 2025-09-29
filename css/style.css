@@ -59,3 +59,51 @@ header nav a:hover{
     color: white;
     font-weight: bold;
 }
+
+/* PRUEBA DE NOTICIAS */
+.seccion-noticias {
+    /* 1. Definir como Grid */
+    display: grid; 
+    
+    /* 2. Definir 3 columnas de igual ancho y que se adapten al espacio */
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    
+    /* 3. Espacio entre las tarjetas */
+    gap: 30px; 
+    
+    padding: 40px 20px;
+    background-color: #f4f4f4; 
+}
+
+.noticia-card {
+    background-color: #fff; 
+    border-radius: 8px;
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 300px;
+    /* Para las imagenes de fondo */
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.noticia-card:hover {
+    transform: translateY(-5px); 
+    /* transform hace una animacion hacer hover en la imagen */
+}
+
+#noticia1{
+    background-image: url(/img/disco.png);
+    
+}
+
+a{
+    text-decoration: none;
+    color: #333;
+}
+
+/* Parte para noticias */
+.noticias-abiertas h2{
+    text-align: center;
+    
+}
