@@ -19,9 +19,8 @@ header {
     display: flex;
     justify-content: space-between; 
     align-items: center; 
-    padding: 10px 20px; 
+    padding: 10px 20px;
 }
-
 
 .parte-superior {
     display: contents; 
@@ -29,8 +28,7 @@ header {
 
 .parte-superior img{
     width: 200px;
-}   
-
+}
 
 header nav ul {
     list-style: none; 
@@ -53,57 +51,82 @@ header nav a{
     border-radius: 10px; 
 }
 
-
 header nav a:hover{
     background-color: #e4ca64;
     color: white;
     font-weight: bold;
 }
 
-/* PRUEBA DE NOTICIAS */
+/* ESTILOS DE NOTICIAS */
+
+.titulo-noticias {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.titulo-noticias h1 {
+    color: var(--negro); 
+    font-size: 2.5em;
+    padding-bottom: 5px;
+    font-family: 'Cedarville Cursive'
+}
+
 .seccion-noticias {
-    /* 1. Definir como Grid */
-    display: grid; 
-    
-    /* 2. Definir 3 columnas de igual ancho y que se adapten al espacio */
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    
-    /* 3. Espacio entre las tarjetas */
-    gap: 30px; 
-    
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
     padding: 40px 20px;
     background-color: #f4f4f4; 
 }
 
+.noticia-link {
+    text-decoration: none;
+    color: var(--negro);
+    display: block; 
+    width: 32.33%; /* Define el ancho explícito */
+    margin: 0.5%; 
+    margin-bottom: 30px; 
+}
+
 .noticia-card {
+position: relative;
     background-color: #fff; 
     border-radius: 8px;
     overflow: hidden; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     transition: transform 0.3s, box-shadow 0.3s;
     height: 300px;
-    /* Para las imagenes de fondo */
     background-size: cover;
+    background-position: center; 
     background-repeat: no-repeat;
 }
 
 .noticia-card:hover {
     transform: translateY(-5px); 
-    /* transform hace una animacion hacer hover en la imagen */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Un hover más fuerte */
 }
 
 #noticia1{
     background-image: url(/img/disco.png);
-    
+}
+
+.texto-carta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: var(--negro); 
+}
+
+.texto-carta h3 {
+    color: #fff; 
+    font-size: 1.2em;
+    margin: 0;
 }
 
 a{
     text-decoration: none;
     color: #333;
-}
-
-/* Parte para noticias */
-.noticias-abiertas h2{
-    text-align: center;
-    
 }
