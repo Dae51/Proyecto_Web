@@ -105,8 +105,8 @@ position: relative;
 }
 
 .noticia-card:hover {
-    transform: translateY(-5px); 
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.3); /* Un hover más fuerte */
+    box-shadow: 5px 5px 15px 5px #000000;
+    transition: all 0.5s;
 }
 
 #noticia1{
@@ -133,6 +133,13 @@ a{
     color: #333;
 }
 
+footer{
+    padding: 30px;
+    text-align: center;
+    background-color: var(--negro);
+    font-size: 30px;
+    color: white;
+}
 /* -------------------------------------- */
 /* ESTILOS DE NOTICIAS Abiertas */
 /* -------------------------------------- */
@@ -145,6 +152,31 @@ a{
 }
 
 .noticias-abiertas p{
-    margin: 5% 10%;
-    font-size: large;
+    margin: 5% 15%;
+    font-size: 20px;
+    background-color:white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--negro);
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
+
+.noticias-abiertas img{
+    max-width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid var(--negro); 
+    background-color: white;
+}
+
+#foto1{
+    width: 500px;
+    padding: 0;
+}
+
+.foto-final{
+    margin-bottom: 150px;
+}
+
