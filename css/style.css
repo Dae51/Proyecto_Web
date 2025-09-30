@@ -57,7 +57,9 @@ header nav a:hover{
     font-weight: bold;
 }
 
-/* ESTILOS DE NOTICIAS */
+/* -------------------------------------- */
+/* ESTILOS DE NOTICIAS PANTALLA PRINCIPAL */
+/* -------------------------------------- */
 
 .titulo-noticias {
     text-align: center;
@@ -69,7 +71,7 @@ header nav a:hover{
     color: var(--negro); 
     font-size: 2.5em;
     padding-bottom: 5px;
-    font-family: 'Cedarville Cursive'
+    font-family: 'Archivo Black'
 }
 
 .seccion-noticias {
@@ -84,7 +86,7 @@ header nav a:hover{
     text-decoration: none;
     color: var(--negro);
     display: block; 
-    width: 32.33%; /* Define el ancho explícito */
+    width: 32.33%; 
     margin: 0.5%; 
     margin-bottom: 30px; 
 }
@@ -129,4 +131,20 @@ position: relative;
 a{
     text-decoration: none;
     color: #333;
+}
+
+/* -------------------------------------- */
+/* ESTILOS DE NOTICIAS Abiertas */
+/* -------------------------------------- */
+
+.noticias-abiertas h2{
+    text-align: center;
+    padding-top: 30px;
+    font-family: 'Archivo Black';
+    color: var(--negro)
+}
+
+.noticias-abiertas p{
+    margin: 5% 10%;
+    font-size: large;
 }
