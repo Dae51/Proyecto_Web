@@ -109,6 +109,9 @@ position: relative;
     transition: all 0.5s;
 }
 
+#noticia2{
+background-image: url(/img/bensonXmay.jpg);
+}
 #noticia1{
     background-image: url(/img/disco.png);
 }
@@ -177,6 +180,10 @@ footer{
 }
 
 .foto-final{
-    margin-bottom: 150px;
+    margin-bottom: 120px;
+}
+
+iframe{
+    margin-bottom: 40px;
 }
 
