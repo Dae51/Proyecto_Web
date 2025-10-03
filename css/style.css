@@ -19,9 +19,8 @@ header {
     display: flex;
     justify-content: space-between; 
     align-items: center; 
-    padding: 10px 20px; 
+    padding: 10px 20px;
 }
-
 
 .parte-superior {
     display: contents; 
@@ -29,8 +28,7 @@ header {
 
 .parte-superior img{
     width: 200px;
-}   
-
+}
 
 header nav ul {
     list-style: none; 
@@ -53,9 +51,139 @@ header nav a{
     border-radius: 10px; 
 }
 
-
 header nav a:hover{
     background-color: #e4ca64;
     color: white;
     font-weight: bold;
 }
+
+/* -------------------------------------- */
+/* ESTILOS DE NOTICIAS PANTALLA PRINCIPAL */
+/* -------------------------------------- */
+
+.titulo-noticias {
+    text-align: center;
+    padding-top: 40px;
+    padding-bottom: 20px;
+}
+
+.titulo-noticias h1 {
+    color: var(--negro); 
+    font-size: 2.5em;
+    padding-bottom: 5px;
+    font-family: 'Archivo Black'
+}
+
+.seccion-noticias {
+    display: flex; 
+    flex-wrap: wrap; 
+    justify-content: center; 
+    padding: 40px 20px;
+    background-color: #f4f4f4; 
+}
+
+.noticia-link {
+    text-decoration: none;
+    color: var(--negro);
+    display: block; 
+    width: 32.33%; 
+    margin: 0.5%; 
+    margin-bottom: 30px; 
+}
+
+.noticia-card {
+position: relative;
+    background-color: #fff; 
+    border-radius: 8px;
+    overflow: hidden; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 300px;
+    background-size: cover;
+    background-position: center; 
+    background-repeat: no-repeat;
+}
+
+.noticia-card:hover {
+    box-shadow: 5px 5px 15px 5px #000000;
+    transition: all 0.5s;
+}
+
+#noticia2{
+background-image: url(/img/bensonXmay.jpg);
+}
+#noticia1{
+    background-image: url(/img/disco.png);
+}
+
+.texto-carta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 15px;
+    background: var(--negro); 
+}
+
+.texto-carta h3 {
+    color: #fff; 
+    font-size: 1.2em;
+    margin: 0;
+}
+
+a{
+    text-decoration: none;
+    color: #333;
+}
+
+footer{
+    padding: 30px;
+    text-align: center;
+    background-color: var(--negro);
+    font-size: 30px;
+    color: white;
+}
+/* -------------------------------------- */
+/* ESTILOS DE NOTICIAS Abiertas */
+/* -------------------------------------- */
+
+.noticias-abiertas h2{
+    text-align: center;
+    padding-top: 30px;
+    font-family: 'Archivo Black';
+    color: var(--negro)
+}
+
+.noticias-abiertas p{
+    margin: 5% 15%;
+    font-size: 20px;
+    background-color:white;
+    padding: 20px;
+    border-radius: 10px;
+    border: 2px solid var(--negro);
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.noticias-abiertas img{
+    max-width: 50%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid var(--negro); 
+    background-color: white;
+}
+
+#foto1{
+    width: 500px;
+    padding: 0;
+}
+
+.foto-final{
+    margin-bottom: 120px;
+}
+
+iframe{
+    margin-bottom: 40px;
+}
+
