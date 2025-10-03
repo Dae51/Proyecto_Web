@@ -141,11 +141,15 @@ a{
 }
 
 footer{
-    padding: 30px;
+    padding: 8px;
     text-align: center;
     background-color: var(--negro);
     font-size: 30px;
     color: white;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
 }
 /* -------------------------------------- */
 /* ESTILOS DE NOTICIAS Abiertas */
