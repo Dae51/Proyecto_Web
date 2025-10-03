@@ -109,11 +109,15 @@ position: relative;
     transition: all 0.5s;
 }
 
+#noticia1{
+    background-image: url(/img/disco.png);
+}
+
 #noticia2{
 background-image: url(/img/bensonXmay.jpg);
 }
-#noticia1{
-    background-image: url(/img/disco.png);
+#noticia3{
+    background-image: url(/img/nuevas-canciones.jpg);
 }
 
 .texto-carta {
