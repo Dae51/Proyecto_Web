@@ -1,51 +1,88 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Acerca de</title>
-    <link rel="stylesheet" href="css/acerca.css">
+    <link rel="stylesheet" href="css/style.css"> <!-- estilos generales (header/nav/footer) -->
+    <link rel="stylesheet" href="css/acerca.css"> <!-- estilos propios de esta página -->
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+    </style>
 </head>
+
 <body>
+    <header>
+        <div class="parte-superior">
+            <img src="img/logo_queen.png" alt="Logo Queen">
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html">Inicio</a></li>
+                <li><a href="noticias.html">Noticias</a></li>
+                <li><a href="integrantes.html">Integrantes</a></li>
+                <li><a href="presentaciones.html">Calendario de presentaciones</a></li>
+                <li><a href="#">Discografía</a></li>
+                <li><a href="#">Historia</a></li>
+                <li><a href="acerca.html" class="activo">Acerca de</a></li>
+            </ul>
+        </nav>
+    </header>
+
     <main>
         <section id="Encabezado">
             <h1>Conócenos</h1>
         </section>
+
         <section id="contenido">
-            <p>Este sitio fue creado por cuatro estudiantes de Ingeniería de Software y Negocios Digitales
-                 que comparten una profunda admiración por la música de Queen. Nuestro propósito es rendir homenaje a una banda que, con su talento y originalidad, 
-            marcó generaciones y dejó una huella imborrable en la historia del rock. <br>
-            Más que un simple tributo, esta página busca ser un espacio para recordar, explorar y celebrar el legado de Queen. Te invitamos a sumergirte en su historia, redescubrir sus canciones y conectar con la magia que sigue inspirando al mundo.</p>
+            <p>
+                Este sitio fue creado por cuatro estudiantes de Ingeniería de Software y Negocios Digitales
+                que comparten una profunda admiración por la música de Queen. Nuestro propósito es rendir homenaje
+                a una banda que, con su talento y originalidad, marcó generaciones y dejó una huella imborrable en
+                la historia del rock. <br><br>
+                Más que un simple tributo, esta página busca ser un espacio para recordar, explorar y celebrar el
+                legado de Queen. Te invitamos a sumergirte en su historia, redescubrir sus canciones y conectar con
+                la magia que sigue inspirando al mundo.
+            </p>
         </section>
+
         <section id="integrantes">
             <h2>Integrantes del proyecto</h2>
+
             <div id="Raul" class="card">
                 <img src="img/Raul.jpg" alt="Raul">
                 <h3>Raúl Portillo</h3>
                 <p>Estudiante de Ingeniería en Software y Negocios Digitales, encargado del calendario.</p>
             </div>
+
             <div id="Rogelio" class="card">
                 <img src="img/Rogelio.jpg" alt="Rogelio" width="250" height="250">
                 <h3>Rogelio Montalvo</h3>
-                <p>Estudiante de Ingeniería en Software y Negocios Digitales, encargado dela discografía.</p>
+                <p>Estudiante de Ingeniería en Software y Negocios Digitales, encargado de la discografía.</p>
             </div>
+
             <div id="Napoleon" class="card">
                 <img src="img/Napoleon.jpg" alt="Napoleon" width="250" height="250">
                 <h3>Napoleon Díaz</h3>
                 <p>Estudiante de Ingeniería en Software y Negocios Digitales. Encargado del main y la sección de noticias.</p>
             </div>
+
             <div id="Javier" class="card">
                 <img src="img/Javier.jpg" alt="Javier" width="250" height="250">
                 <h3>Javier Paniagua</h3>
-                <p>Estudiante de Ingeniería en Software y Negocios Digitales. Encargado de la sección la historia de la banda.</p>
+                <p>Estudiante de Ingeniería en Software y Negocios Digitales. Encargado de la sección de historia de la banda.</p>
             </div>
+
             <div id="Belen" class="card">
                 <img src="img/Belen.jpg" alt="Belen" width="250" height="250">
                 <h3>Belén Pérez</h3>
-                <p>Estudiante de Ingeniería en Software y Negocios Digitales. Encargado de la sección de integrantes y "Acerca de".</p>
+                <p>Estudiante de Ingeniería en Software y Negocios Digitales. Encargada de la sección de integrantes y "Acerca de".</p>
+            </div>
         </section>
     </main>
+
+    <footer>
+        Derechos Reservados 2025
+    </footer>
 </body>
-
 </html>
-
