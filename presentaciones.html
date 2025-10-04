@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Calendario</title>
+<!--     Hoja de estilos personalizada   -->    
     <link rel="stylesheet" href="./css/style.css">
     <!-- FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
@@ -15,7 +16,7 @@
         <div class="parte-superior">
             <img src="img/logo_queen.png" alt="Logo Queen">
         </div>
-        <nav>
+        <nav> 
             <ul>
                 <li><a href="index.html">Inicio</a></li>
                 <li><a href="#">Noticias</a></li>
@@ -29,11 +30,14 @@
     </header>
 
     <main>
-        <div id="calendar"></div>
+        <article class="calendar-container">
+            <div id="calendar"></div>
+        </article>
     </main>
 
     <!-- FullCalendar JS -->
   <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
+    <!-- Script personalizado para inicializar el calendario -->
   <script src="./js/calendar.js"></script>
 </body>
 
