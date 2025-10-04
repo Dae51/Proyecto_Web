@@ -16,9 +16,7 @@ body{
     background-repeat: no-repeat;
     background-size: cover;
     text-align: center;
-    /* padding fluido: se adapta al ancho de la ventana */
     padding: 8vw 5%;
-    
 }
 #Encabezado h1{
     font-size: 28px;
@@ -68,8 +66,8 @@ section:not(#Encabezado){
     box-shadow: 0 8px 20px rgba(0,0,0,0.45);
 }
 
-section + section { margin-top: 20px; }
 
+section + section { margin-top: 20px; }
 
 section:nth-of-type(even):not(#Encabezado){
     background-color: rgb(53, 7, 95);
@@ -80,35 +78,38 @@ section:nth-of-type(even):not(#Encabezado){
     section:not(#Encabezado){ margin: 12px; padding: 12px; }
 }
 
-
 #integrantes{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 16px;
-    align-items: start;
+    grid-template-columns: repeat(3, minmax(240px, 1fr));
+    gap: 20px;
+    align-items: stretch;
 }
 
 #integrantes .card{
     background: rgb(3, 3, 47);
     border: 1px solid rgba(255,255,255,0.06);
     border-radius: 10px;
-    padding: 12px;
+    padding: 18px;
     text-align: center;
     color: #ffffff;
     transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    min-height: 340px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    gap: 12px;
 }
 
 #integrantes .card img{
     width: 100%;
-    height: auto;
-    aspect-ratio: 1/1;
+    height: 220px;
     object-fit: cover;
     border-radius: 6px;
     margin-bottom: 8px;
 }
 
-#integrantes .card h3{ color: #f3c80a; margin: 6px 0 6px 0; }
-#integrantes .card p{ color: #fff; font-size: 14px; }
+#integrantes .card h3{ color: #f3c80a; margin: 6px 0 6px 0; font-size: 20px; }
+#integrantes .card p{ color: #fff; font-size: 15px; line-height: 1.5; }
 
 #integrantes .card:hover{
     transform: translateY(-8px);
@@ -125,8 +126,10 @@ main {
 
 
 @media (max-width: 992px){
-    #integrantes{ grid-template-columns: repeat(2, 1fr); }
+    #integrantes{ grid-template-columns: repeat(2, minmax(220px, 1fr)); }
 }
 @media (max-width: 600px){
     #integrantes{ grid-template-columns: 1fr; }
+    #integrantes .card{ min-height: auto; padding: 14px; }
+    #integrantes .card img{ height: 180px; }
 }
