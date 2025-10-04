@@ -1,19 +1,19 @@
  body {
-      font-family: Arial, sans-serif;
+      font-family: Didact Gothic, sans-serif;
       line-height: 1.7;
       margin: 0;
       padding: 0;
-      background: #0b0c2a;
+      background: #000000;
       color: #f0e6d2;
     }
 
-    .titulo {
-      background: linear-gradient(135deg, #1a1c3a, #0b0c2a);
+    header {
+      background: #000000;
       color: #f8d12f;
       text-align: center;
       padding: 30px 20px;
-      border-bottom: 4px solid #c8102e;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+      border-bottom: 4px solid rgb(123, 12, 119);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     }
 
     main {
@@ -28,7 +28,7 @@
     }
 
     h3 {
-      color: #c8102e;
+      color: #ffffff;
       text-align: center;
       margin-top: 30px;
       font-size: 2em;
@@ -44,7 +44,7 @@
       padding: 20px;
       background: #1a1c3a;
       color: #f0e6d2;
-      border-top: 4px solid #c8102e;
+      border-top: 4px solid rgb(123, 12, 119)
     }
 
     @media (max-width: 600px) {
