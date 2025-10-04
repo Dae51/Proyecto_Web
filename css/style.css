@@ -19,13 +19,10 @@ header {
     justify-content: space-between; 
     align-items: center; 
     padding: 10px 20px;
+    flex-wrap: wrap;
 }
 
-.parte-superior {
-    display: contents; 
-}
-
-.parte-superior img{
+.parte-superior img {
     width: 200px;
 }
 
@@ -34,13 +31,16 @@ header nav ul {
     display: flex; 
     gap: 10px; 
     align-items: center;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
 }
 
 header nav {
     margin-right: 15%;
 }
 
-header nav a{
+header nav a {
     text-decoration: none;
     font-size: 16px;
     padding: 15px 25px;
@@ -48,13 +48,60 @@ header nav a{
     color: var(--negro); 
     font-weight: bold; 
     border-radius: 10px; 
+    transition: all 0.3s ease-in-out;
+    white-space: nowrap;
 }
 
-header nav a:hover{
+header nav a:hover {
     background-color: #e4ca64;
     color: white;
     font-weight: bold;
 }
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 10px;
+    }
+
+    .parte-superior {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
+
+    .parte-superior img {
+        width: 150px;
+    }
+
+    header nav {
+        margin: 0;
+        width: 100%;
+    }
+
+    header nav ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    header nav ul li {
+        width: 100%;
+        display: flex;
+    }
+
+    header nav a {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
+
 
 .pantalla-principal{
     background-image: url(../img/queen-landing.jpg);
@@ -83,18 +130,18 @@ header nav a:hover{
 /* ESTILOS DE NOTICIAS PANTALLA PRINCIPAL */
 /* -------------------------------------- */
 
-
 .titulo-noticias {
     text-align: center;
     padding-top: 40px;
     padding-bottom: 20px;
+   background-color:rgb(52, 10, 69);
 }
 
 .titulo-noticias h1 {
-    color: var(--negro); 
+    color: white; 
     font-size: 2.5em;
     padding-bottom: 5px;
-    font-family: 'Archivo Black'
+    font-family: Arial, sans-serif;
 }
 
 .seccion-noticias {
@@ -102,7 +149,7 @@ header nav a:hover{
     flex-wrap: wrap; 
     justify-content: center; 
     padding: 40px 20px;
-    background-color: #f4f4f4; 
+    background-color: rgb(52, 10, 69); 
 }
 
 .noticia-link {
@@ -115,7 +162,7 @@ header nav a:hover{
 }
 
 .noticia-card {
-position: relative;
+    position: relative;
     background-color: #fff; 
     border-radius: 8px;
     overflow: hidden; 
@@ -137,8 +184,9 @@ position: relative;
 }
 
 #noticia2{
-background-image: url(../img/bensonXmay.jpg);
+    background-image: url(../img/bensonXmay.jpg);
 }
+
 #noticia3{
     background-image: url(../img/nuevas-canciones.jpg);
 }
@@ -164,7 +212,7 @@ a{
 }
 
 footer{
-    padding: 8px;
+    padding: 20px 8px;
     text-align: center;
     background-color: var(--negro);
     font-size: 30px;
@@ -173,54 +221,132 @@ footer{
     left: 0;
     bottom: 0;
     width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 60px; /* Altura fija para centrado vertical */
 }
+
+/* Responsive para móviles - COLUMNA */
+@media (max-width: 480px) {
+    .titulo-noticias h1 {
+        font-size: 1.8em;
+    }
+
+    .seccion-noticias {
+        flex-direction: column;
+        padding: 20px 10px;
+        align-items: center;
+    }
+
+    .noticia-link {
+        width: 90%;
+        margin: 0 0 20px 0;
+    }
+
+    .noticia-card {
+        height: 250px;
+    }
+
+    footer {
+        font-size: 20px;
+        padding: 10px;
+        margin-top: 60px;
+    }
+}
+
 /* -------------------------------------- */
 /* ESTILOS DE NOTICIAS Abiertas */
 /* -------------------------------------- */
 
+.noticias-abiertas {
+    background-color:rgb(52, 10, 69);;
+    padding: 40px 20px;
+    margin-bottom: 0px;
+}
+
+.contenedor-noticia {
+    background-color: white;
+    border: 2px solid var(--negro);
+    border-radius: 20px;
+    padding: 40px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
 .noticias-abiertas h2{
     text-align: center;
-    padding-top: 30px;
-    font-family: 'Archivo Black';
-    color: var(--negro)
+    padding: 20px 0;
+    font-family: Arial, sans-serif;
+    color: var(--negro);
 }
 
 .noticias-abiertas p{
-    margin: 5% 15%;
+    margin: 20px 0;
     font-size: 20px;
-    background-color:white;
-    padding: 20px;
-    border-radius: 10px;
-    border: 2px solid var(--negro);
-    margin-top: 20px;
-    margin-bottom: 20px;
+    padding: 0;
+    color: var(--negro);
+    line-height: 1.6;
 }
 
 .noticias-abiertas img{
     max-width: 50%;
     display: block;
-    margin-left: auto;
-    margin-right: auto;
+    margin: 30px auto;
     border: 2px solid var(--negro); 
-    background-color: white;
+    border-radius: 10px;
 }
-
-.noticias-abiertas {
-    margin-bottom: 70px;
-}
-
 
 #foto1{
-    width: 500px;
-    padding: 0;
+    width: 400px;
+    max-width: 90%;
+    padding: 0%;
 }
 
 .foto-final{
-    margin-bottom: 120px;
+    margin-bottom: 20px;
 }
 
 iframe{
-    margin-bottom: 40px;
+    margin: 30px auto;
+    display: block;
+    max-width: 90%;
+    border-radius: 10px;
+    border: 2px solid var(--negro);
+}
+
+@media (max-width: 480px) {
+    .noticias-abiertas {
+        padding: 20px 10px;
+    }
+
+    .contenedor-noticia {
+        padding: 20px;
+        border-radius: 15px;
+    }
+
+    .noticias-abiertas h2{
+        font-size: 1.3em;
+        padding: 10px 0;
+    }
+
+    .noticias-abiertas p{
+        font-size: 16px;
+        margin: 15px 0;
+    }
+
+    .noticias-abiertas img{
+        max-width: 90%;
+        margin: 20px auto;
+    }
+
+    #foto1{
+        width: 100%;
+    }
+
+    iframe{
+        max-width: 100%;
+    }
 }
 
 /* -------------------------------------- */
@@ -231,7 +357,7 @@ iframe{
     width: 80%;
 }
 
-.calendar-container  {
+.calendar-container {
     display: flex;
     justify-content: center;
     margin: 20px 0 20px 0;

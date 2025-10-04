@@ -83,51 +83,90 @@
  /* Navegacion */
 
  header {
-   background-color: var(--negro);
-   display: flex;
-   justify-content: space-between;
-   align-items: center;
-   padding: 10px 20px;
- }
+    background-color: var(--negro);
+    display: flex;
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 10px 20px;
+    flex-wrap: wrap;
+}
 
- .parte-superior {
-   display: contents;
- }
+.parte-superior img {
+    width: 200px;
+}
 
- .parte-superior img {
-   width: 200px;
- }
+header nav ul {
+    list-style: none; 
+    display: flex; 
+    gap: 10px; 
+    align-items: center;
+    margin: 0;
+    padding: 0;
+    flex-wrap: wrap;
+}
 
- header nav ul {
-   list-style: none;
-   display: flex;
-   gap: 10px;
-   align-items: center;
-   width: 100%;
- }
+header nav {
+    margin-right: 15%;
+}
 
- header nav {
-   margin-right: 15%;
+header nav a {
+    text-decoration: none;
+    font-size: 16px;
+    padding: 15px 25px;
+    background-color: var(--amarillo); 
+    color: var(--negro); 
+    font-weight: bold; 
+    border-radius: 10px; 
+    transition: all 0.3s ease-in-out;
+    white-space: nowrap;
+}
 
- }
+header nav a:hover {
+    background-color: #e4ca64;
+    color: white;
+    font-weight: bold;
+}
 
- header nav a {
-   text-decoration: none;
-   font-size: 16px;
-   padding: 15px 25px;
-   background-color: var(--amarillo);
-   color: var(--negro);
-   font-weight: bold;
-   border-radius: 10px;
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 480px) {
+    header {
+        flex-direction: column;
+        align-items: center;
+        padding: 15px 10px;
+    }
 
- }
+    .parte-superior {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+    }
 
- header nav a:hover {
-   background-color: #e4ca64;
-   color: white;
-   font-weight: bold;
- }
+    .parte-superior img {
+        width: 150px;
+    }
 
- footer p {
-  text-align: center;
- }
+    header nav {
+        margin: 0;
+        width: 100%;
+    }
+
+    header nav ul {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        padding: 0 10px;
+    }
+
+    header nav ul li {
+        width: 100%;
+        display: flex;
+    }
+
+    header nav a {
+        width: 100%;
+        text-align: center;
+        padding: 12px 20px;
+        font-size: 15px;
+    }
+}
