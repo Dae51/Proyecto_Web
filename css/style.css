@@ -67,6 +67,15 @@ header nav a:hover{
     align-items: center;
 }
 
+@media (max-width: 480px) {
+    .pantalla-principal {
+        background-image: url(../img/queen-landing-mobile.jpg);
+        background-size: cover;
+        background-position: center;
+        height: 60vh;
+    }
+}
+
 /* -------------------------------------- */
 /* ESTILOS DE NOTICIAS PANTALLA PRINCIPAL */
 /* -------------------------------------- */
