@@ -20,7 +20,7 @@ body{
     background-size: cover;
     background-repeat: no-repeat;
     background-position: center;
-    /* valor base, luego escalamos con media queries */
+   
     padding: 40px;
 }
 
@@ -37,7 +37,7 @@ body{
 }
 
 #integrantes{
-    /* diseño líquido: columnas flexibles que se adaptan al ancho */
+    
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 12px;
@@ -71,7 +71,7 @@ body{
 .card img{
     width: 100%;
     height: auto;
-    aspect-ratio: 4/3; /* mantener proporción y permitir recorte con object-fit */
+    aspect-ratio: 4/3; 
     object-fit: cover;
     border-radius: 8px;
     display: block;
@@ -91,7 +91,7 @@ body{
     font-size: 13px;
     margin-bottom: 6px;
     flex: 1 1 auto;
-    overflow: auto; /* permitir lectura completa si el contenido excede la tarjeta */
+    overflow: auto;
 }
 
 .role{
@@ -112,10 +112,10 @@ body{
     transform: scale(1.03) translateY(-4px);
 }
 
-/* En pantallas pequeñas, mantener fila y permitir scroll horizontal */
+
 @media (max-width: 700px){
     #integrantes{
-        grid-template-columns: 1fr; /* una columna en móviles */
+        grid-template-columns: 1fr;
         padding: 12px;
         gap: 12px;
     }
@@ -125,7 +125,7 @@ body{
     }
 }
 
-/* ajustes para pantallas medianas y grandes (sin usar clamp) */
+
 @media (min-width: 700px){
     #Encabezado{ padding: 80px; }
     #Encabezado h1{ font-size: 48px; }
@@ -143,7 +143,7 @@ body{
     .card p{ font-size: 14px; }
 }
 
-/* Separación visual entre secciones (coherente con acerca.css) */
+
 section:not(#Encabezado){
     max-width: 1100px;
     margin: 26px auto;
@@ -161,4 +161,5 @@ section:nth-of-type(even):not(#Encabezado){
 
 @media (max-width: 700px){
     section:not(#Encabezado){ margin: 12px; padding: 12px; }
+
 }
