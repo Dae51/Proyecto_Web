@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Bitcount+Grid+Double+Ink:wght@100..900&display=swap');
+
+
+*{
+    font-family: 'Didact Gothic', sans-serif;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    margin: 0px;
+    background-color: #000000;
+    color: #ffffff;
+}
+
+#Encabezado{
+    text-align: center;
+    background-image: url(https://64.media.tumblr.com/53915f2032aa57ceaa4b58d76e47c1fc/tumblr_n6emq3iUZQ1r7powqo3_500.gif);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    /* valor base, luego escalamos con media queries */
+    padding: 40px;
+}
+
+#Encabezado h1{
+    font-size: 28px;
+    color: #c7bf27;
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+#integrantes{
+    /* diseño líquido: columnas flexibles que se adaptan al ancho */
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    align-items: stretch;
+    padding: 12px;
+}
+
+#integrantes p{
+    font-size: 14px;
+    line-height: 1.5;
+    color: #e6e6e6;
+    text-align: center;
+}
+
+.card{
+    background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+    border: 1px solid rgb(123, 12, 119);
+    border-radius: 12px;
+    width: 100%;
+    padding: 10px;
+    text-align: center;
+    transition: transform 220ms ease, box-shadow 220ms ease, border-color 220ms ease;
+    backdrop-filter: blur(6px);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    height: 100%;
+    overflow: hidden;
+}
+
+.card img{
+    width: 100%;
+    height: auto;
+    aspect-ratio: 4/3; /* mantener proporción y permitir recorte con object-fit */
+    object-fit: cover;
+    border-radius: 8px;
+    display: block;
+    margin: 0 0 8px 0;
+    transition: transform 260ms ease;
+    flex: 0 0 auto;
+}
+
+.card h2{
+    font-size: 20px;
+    margin: 6px 0 4px 0;
+    color: #f3c80a;
+}
+
+.card p{
+    color: #e6e6e6;
+    font-size: 13px;
+    margin-bottom: 6px;
+    flex: 1 1 auto;
+    overflow: auto; /* permitir lectura completa si el contenido excede la tarjeta */
+}
+
+.role{
+    font-size: 13px;
+    color: #ddd;
+    margin-bottom: 8px;
+    font-weight: 500;
+}
+
+.card:hover{
+    transform: translateY(-6px) scale(1.02);
+    box-shadow: 0 10px 24px rgba(0,0,0,0.55), 0 3px 9px rgba(243,200,10,0.06);
+    border-color: rgb(206, 172, 20);
+    background-color: #120c39;
+}
+
+.card:hover img{
+    transform: scale(1.03) translateY(-4px);
+}
+
+/* En pantallas pequeñas, mantener fila y permitir scroll horizontal */
+@media (max-width: 700px){
+    #integrantes{
+        grid-template-columns: 1fr; /* una columna en móviles */
+        padding: 12px;
+        gap: 12px;
+    }
+    .card{
+        max-width: 100%;
+        height: auto;
+    }
+}
+
+/* ajustes para pantallas medianas y grandes (sin usar clamp) */
+@media (min-width: 700px){
+    #Encabezado{ padding: 80px; }
+    #Encabezado h1{ font-size: 48px; }
+    #integrantes{ padding: 20px; gap: 14px; }
+    .card{ padding: 14px; }
+    .card img{ margin-bottom: 12px; }
+}
+
+@media (min-width: 1200px){
+    #Encabezado{ padding: 200px; }
+    #Encabezado h1{ font-size: 100px; }
+    #integrantes{ padding: 40px; gap: 24px; }
+    #integrantes p{ font-size: 16px; }
+    .card{ padding: 18px; max-width: 420px; }
+    .card p{ font-size: 14px; }
+}
+
+/* Separación visual entre secciones (coherente con acerca.css) */
+section:not(#Encabezado){
+    max-width: 1100px;
+    margin: 26px auto;
+    padding: 20px;
+    background-color: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.04);
+    border-radius: 10px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.55);
+}
+
+section:nth-of-type(even):not(#Encabezado){
+    background-color: rgba(243,200,10,0.03);
+    border-color: rgba(243,200,10,0.06);
+}
+
+@media (max-width: 700px){
+    section:not(#Encabezado){ margin: 12px; padding: 12px; }
+}
