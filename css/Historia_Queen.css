@@ -1,134 +1,133 @@
+ 
  body {
-      font-family: Didact Gothic, sans-serif;
-      line-height: 1.7;
-      margin: 0;
-      padding: 0;
-      background: #000000;
-      color: #f0e6d2;
-    }
+   font-family: Arial, sans-serif;
+   line-height: 1.7;
+   margin: 0 0 0 0;
+   padding: 0;
+   background: #0b0c2a;
+   color: #f0e6d2;
+ }
 
-    header {
-      background: #000000;
-      color: #f8d12f;
-      text-align: center;
-      padding: 30px 20px;
-      border-bottom: 4px solid rgb(123, 12, 119);
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-    }
+ .titulo {
+   background: linear-gradient(135deg, #1a1c3a, #0b0c2a);
+   color: #f8d12f;
+   text-align: center;
+   padding: 30px 20px;
+   border-bottom: 4px solid #c8102e;
+   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+ }
 
-    main {
-      max-width: 900px;
-      margin: 40px auto;
-      padding: 0 20px;
-    }
 
-    h2 {
-      color: #f8d12f;
-      margin-top: 40px;
-    }
+ main {
+   max-width: 900px;
+   margin: 40px auto 100px auto;
+   padding: 0 20px;
+ }
 
-    h3 {
-      color: #ffffff;
-      text-align: center;
-      margin-top: 30px;
-      font-size: 2em;
-    }
+ h2 {
+   color: #f8d12f;
+   margin-top: 40px;
+ }
 
-    p {
-      margin-bottom: 20px;
-      text-align: justify;
-    }
+ h3 {
+   color: #c8102e;
+   text-align: center;
+   margin-top: 30px;
+   font-size: 2em;
+ }
 
-    footer p{
-      text-align: center;
-      padding: 20px;
-      background: #1a1c3a;
-      color: #f0e6d2;
-      border-top: 4px solid rgb(123, 12, 119)
-    }
+ p {
+   margin-bottom: 20px;
+   text-align: justify;
+ }
 
-    @media (max-width: 600px) {
-      header {
-        padding: 20px 10px;
-      }
 
-      header h1 {
-        font-size: 1.8em;
-      }
+ @media (max-width: 600px) {
+   header {
+     padding: 20px 10px;
+   }
 
-      main {
-        margin: 20px auto;
-        padding: 0 15px;
-      }
+   header h1 {
+     font-size: 1.8em;
+   }
 
-      h2 {
-        font-size: 1.4em;
-      }
+   main {
+     margin: 20px auto;
+     padding: 0 15px;
+   }
 
-      p {
-        font-size: 0.95em;
-      }
-    }
+   h2 {
+     font-size: 1.4em;
+   }
 
-    @media (min-width: 1200px) {
-      main {
-        max-width: 1100px;
-        font-size: 1.1em;
-      }
+   p {
+     font-size: 0.95em;
+   }
+ }
 
-      header h1 {
-        font-size: 3.2em;
-      }
+ @media (min-width: 1200px) {
+   main {
+     max-width: 1100px;
+     font-size: 1.1em;
+   }
 
-      h2 {
-        font-size: 2em;
-      }
-    }
+   header h1 {
+     font-size: 3.2em;
+   }
 
-/* Navegacion */
+   h2 {
+     font-size: 2em;
+   }
+ }
 
-header {
-    background-color: var(--negro);
-    display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px 20px;
-}
+ /* Navegacion */
 
-.parte-superior {
-    display: contents; 
-}
+ header {
+   background-color: var(--negro);
+   display: flex;
+   justify-content: space-between;
+   align-items: center;
+   padding: 10px 20px;
+ }
 
-.parte-superior img{
-    width: 200px;
-}
+ .parte-superior {
+   display: contents;
+ }
 
-header nav ul {
-    list-style: none; 
-    display: flex; 
-    gap: 10px; 
-    align-items: center;
-    width: 100%;
-}
+ .parte-superior img {
+   width: 200px;
+ }
 
-header nav {
-    margin-right: 15%;
-    
-}
+ header nav ul {
+   list-style: none;
+   display: flex;
+   gap: 10px;
+   align-items: center;
+   width: 100%;
+ }
 
-header nav a{
-    text-decoration: none;
-    font-size: 16px;
-    padding: 15px 25px;
-    background-color: var(--amarillo); 
-    color: var(--negro); 
-    font-weight: bold; 
-    border-radius: 10px; 
-    
-}
+ header nav {
+   margin-right: 15%;
 
-header nav a:hover{
-    background-color: #e4ca64;
-    color: white;
-    font-weight: bold;
-}
+ }
+
+ header nav a {
+   text-decoration: none;
+   font-size: 16px;
+   padding: 15px 25px;
+   background-color: var(--amarillo);
+   color: var(--negro);
+   font-weight: bold;
+   border-radius: 10px;
+
+ }
+
+ header nav a:hover {
+   background-color: #e4ca64;
+   color: white;
+   font-weight: bold;
+ }
+
+ footer p {
+  text-align: center;
+ }

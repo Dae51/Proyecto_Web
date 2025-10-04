@@ -133,14 +133,14 @@ position: relative;
 }
 
 #noticia1{
-    background-image: url(/img/disco.png);
+    background-image: url(../img/disco.png);
 }
 
 #noticia2{
-background-image: url(/img/bensonXmay.jpg);
+background-image: url(../img/bensonXmay.jpg);
 }
 #noticia3{
-    background-image: url(/img/nuevas-canciones.jpg);
+    background-image: url(../img/nuevas-canciones.jpg);
 }
 
 .texto-carta {
@@ -204,6 +204,11 @@ footer{
     border: 2px solid var(--negro); 
     background-color: white;
 }
+
+.noticias-abiertas {
+    margin-bottom: 70px;
+}
+
 
 #foto1{
     width: 500px;

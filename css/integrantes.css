@@ -112,6 +112,9 @@ body{
     transform: scale(1.03) translateY(-4px);
 }
 
+main {
+    margin-bottom: 70px;
+}
 
 @media (max-width: 700px){
     #integrantes{

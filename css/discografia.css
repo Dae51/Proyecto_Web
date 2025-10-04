@@ -157,3 +157,10 @@ header {
   font-size: 0.9rem;
   color: #666;
 }
+
+.title-discografia {
+    text-align: center;
+    color: white;
+    margin-top: 20px;
+
+}

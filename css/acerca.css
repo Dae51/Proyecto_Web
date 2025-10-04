@@ -117,6 +117,9 @@ section:nth-of-type(even):not(#Encabezado){
     color: black;
 }
 
+main {
+    margin-bottom: 70px;
+}
 
 #integrantes > h2{ grid-column: 1 / -1; margin: 0 0 12px 0; color: #f3c80a; }
 
