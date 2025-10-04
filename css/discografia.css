@@ -1,18 +1,16 @@
-/* Estilos generales */
 body {
   font-family: Arial, sans-serif;
   background-color: #f5f5f5;
   margin: 0;
   padding: 0;
   color: #222;
-background-image: url(https://w.wallhaven.cc/full/5d/wallhaven-5d8y69.png);
+  background-image: url(https://w.wallhaven.cc/full/5d/wallhaven-5d8y69.png);
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
 
 }
 
-/* Encabezado */
 header {
   background-color: #000;
   color: #fff;
@@ -20,7 +18,6 @@ header {
   text-align: center;
 }
 
-/* Contenedor principal */
 .container {
   max-width: 1200px;
   margin: 2rem auto;
@@ -31,10 +28,8 @@ header {
   gap: 1rem;
 }
 
-/* Estilo de cada álbum */
 .album {
   position: relative;
-  /* flexible cards: grow/shrink with a comfortable min width */
   flex: 1 1 220px;
   max-width: 300px;
   text-align: center;
@@ -42,9 +37,7 @@ header {
   padding: 1rem;
   margin-bottom: 1rem;
   border-radius: 8px;
-  /* allow controls or absolute elements to be visible (don't clip) */
   overflow: visible;
-  /* make content flow vertically so media controls appear below the image */
   display: flex;
   flex-direction: column;
   align-items: stretch;
@@ -58,54 +51,47 @@ header {
   box-shadow: 0 6px 18px rgba(0,0,0,0.18);
 }
 
-/* Títulos de álbum */
 .album h2 {
   margin-top: 0;
-  color: #b10f2e; /* rojo elegante */
+  color: #b10f2e;
 }
 
-/* Párrafos normales (que no sean descripción) */
 .album p:not(.descripcion) {
   margin: 0.3rem 0;
   color: #222;
   opacity: 1;
 }
 
-/* Descripción del álbum (inicialmente oculta) */
 .album .descripcion {
-  /* inline description: initially collapsed so it pushes content when opened */
   position: relative;
   background-color: rgba(0,0,0,0.85);
   color: #fff;
-  padding: 0 0.5rem; /* collapsed padding */
+  padding: 0 0.5rem;
   font-size: 0.95rem;
   max-height: 0;
   overflow: hidden;
   opacity: 0;
   transition: max-height 0.35s ease, padding 0.25s ease, opacity 0.25s ease;
-  pointer-events: none; /* re-enabled on hover */
+  pointer-events: none;
   border-radius: 6px;
   margin-top: 0.5rem;
 }
 
-/* Expand description downward on hover and allow interaction */
 .album:hover .descripcion {
   opacity: 1;
-  max-height: 240px; /* room for multiple lines */
+  max-height: 240px;
   padding: 0.5rem;
   pointer-events: auto;
 }
 
-/* Responsive: móviles */
 @media (max-width: 600px) {
   .album {
     padding: 0.8rem;
-    flex: 1 1 45%; /* two-up on small screens */
+    flex: 1 1 45%;
     max-width: 45%;
   }
 }
 
-/* Específico para la página de álbumes */
 .albums-container {
   display: flex;
   flex-wrap: wrap;
@@ -116,13 +102,11 @@ header {
 .album img {
   width: 100%;
   height: auto;
-  /* reduce image height slightly to leave room for audio controls */
   max-height: 140px;
   object-fit: cover;
   border-radius: 4px;
 }
 
-/* Make media elements fit the album card */
 .album .video,
 .album .audio {
   width: 100%;
@@ -133,33 +117,28 @@ header {
   border-radius: 6px;
 }
 
-/* Ensure audio controls are visible and easy to interact with */
 .album .audio {
-  min-height: 44px; /* make sure native controls have room */
+  min-height: 44px;
   padding: 0.25rem 0.25rem;
   background: transparent;
   position: relative;
   z-index: 5;
 }
 
-/* If audio still appears behind something, bring it forward */
 .album img {
   position: relative;
   z-index: 1;
 }
 
-/* For video specifically make it responsive while keeping aspect ratio */
 .album .video {
   background: #000;
 }
 
-/* small tweak: ensure audio control doesn't overflow on very small screens */
 .album .audio {
   padding: 0.25rem 0.25rem;
   background: transparent;
 }
 
-/* Larger layouts: allow more columns */
 @media (min-width: 900px) {
   .album {
     flex: 1 1 calc(25% - 1rem);
