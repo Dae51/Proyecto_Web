@@ -7,8 +7,10 @@
     <title>Calendario</title>
     <!--     Hoja de estilos personalizada   -->
     <link rel="stylesheet" href="./css/style.css">
+    <link rel="stylesheet" href="./css/calendar.css">
     <!-- FullCalendar CSS -->
     <link href="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/presentaciones.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
     </style>
@@ -32,11 +34,49 @@
         </nav>
     </header>
 
+
     <main>
-        <article class="calendar-container">
+        <section>
+            
+        </section>
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+
+            <div class="current-day">
+                <div class="day-number" id="currentDay">05</div>
+                <div class="day-name" id="currentDayName">DOMINGO</div>
+            </div>
+
+            <div class="section-title">Presentaciones de Queen</div>
+            <ul class="event-list" id="currentEvents">
+                <li class="event-item">Evento de prueba</li>
+                <li class="event-item">Live Aid</li>
+            </ul>
+            
+            <button class="create-event-btn">Create an Event</button>
+        </aside>
+
+        <!-- Calendario principal -->
+        <div class="calendar-content">
+            <div class="year-nav">
+                <button id="prevYear">◄</button>
+                <h2 id="currentYear">2025</h2>
+                <button id="nextYear">►</button>
+            </div>
+
+            <div class="month-nav" id="monthNav"></div>
+
             <div id="calendar"></div>
-        </article>
+        </div>
     </main>
+
+
+
 
     <!-- FullCalendar JS -->
     <script src="https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js"></script>
