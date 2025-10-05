@@ -116,9 +116,9 @@ header nav a:hover {
 
 @media screen and (max-width: 480px) {
     .pantalla-principal {
-        background-image: url(../img/queen-landing-mobile.jpg);
+        background-image: url(../img/queen-landing.jpg);
         background-size: cover;
-        background-position: center;
+        background-position: center center; 
         height: 60vh;
         display: flex;
         justify-content: center;
