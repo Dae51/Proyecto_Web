@@ -7,7 +7,7 @@ body {
  }
 
  main {
-     padding: 25px;
+     padding: 23px;
      display: flex;
      height: auto;
  }
@@ -150,6 +150,7 @@ body {
      background: white;
      padding: 40px 60px;
      overflow-y: auto;
+     border-radius: 0 40px 40px 0;
  }
 
  /* Navegación de año */
