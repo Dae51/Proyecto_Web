@@ -263,6 +263,7 @@ footer{
     background-color:rgb(52, 10, 69);;
     padding: 40px 20px;
     margin-bottom: 0px;
+    
 }
 
 .contenedor-noticia {
@@ -272,6 +273,7 @@ footer{
     padding: 40px;
     max-width: 1200px;
     margin: 0 auto;
+    border: 5px solid gold;
 }
 
 .noticias-abiertas h2{
