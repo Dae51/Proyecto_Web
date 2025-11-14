@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Panel Admin - Queen</title>
+
+    <!-- Estilos específicos del admin (creá este archivo: css/admin.css) -->
+    <link rel="stylesheet" href="./css/admin.css">
+
+    <!-- Fuente similar a tu presentaciones -->
+    <link href="https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap" rel="stylesheet">
+
+    <!-- Firebase SDK - Reemplazar con tu configuración real -->
+    <!-- <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-firestore.js"></script>
+    <script>
+        // TODO: Reemplazar con tu configuración de Firebase
+        // const firebaseConfig = {
+        //     apiKey: "YOUR_API_KEY",
+        //     authDomain: "your-app.firebaseapp.com",
+        //     projectId: "your-project-id",
+        //     storageBucket: "your-project-id.appspot.com",
+        //     messagingSenderId: "your-sender-id",
+        //     appId: "your-app-id"
+        // };
+        // firebase.initializeApp(firebaseConfig);
+        // const db = firebase.firestore();
+    </script> -->
+
+    <!-- Opcional: bootstrap (si prefieren usarlo) - lo dejo comentado -->
+    <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"> -->
+
+</head>
+
+<body>
+    <!-- Header / misma estructura que tu presentaciones.html -->
+    <header>
+        <div class="parte-superior">
+            <a href="./index.html"><img src="./img/logo_queen.png" alt="Logo Queen"></a>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="./index.html">Inicio</a></li>
+                <li><a href="./noticias.html">Noticias</a></li>
+                <li><a href="./Integrantes.html">Integrantes</a></li>
+                <li><a href="./presentaciones.html">Calendario</a></li>
+                <li><a href="./Discografia.html">Discografía</a></li>
+                <li><a href="./Historia_Queen.html">Historia</a></li>
+                <li><a href="./acerca.html">Acerca de</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- Layout admin -->
+    <div class="layout">
+        <!-- Sidebar admin -->
+        <aside class="admin-sidebar" role="navigation" aria-label="Panel administrativo">
+            <h3>Panel Admin — Queen</h3>
+            <p style="color:var(--muted);font-size:14px">Usuario: administrador</p>
+
+            <ul class="nav-admin">
+                <li><a href="#" class="btn-link" data-section="integrantes">👥 Integrantes</a></li>
+                <li><a href="#" class="btn-link" data-section="presentaciones">📅 Presentaciones</a></li>
+                <li><a href="#" class="btn-link" data-section="discografia">💿 Discografía</a></li>
+                <li><a href="#" class="btn-link" data-section="aprobaciones">🔎 Aprobaciones</a></li>
+                <li><a href="#" class="btn-link" data-section="config">⚙ Configuración</a></li>
+            </ul>
+
+            <button id="logoutBtn" class="logout">Cerrar sesión</button>
+        </aside>
+
+        <!-- Main content -->
+        <main class="admin-main">
+            <h1 id="titulo-seccion">Panel Administrativo</h1>
+
+            <!-- Integrantes -->
+            <section id="integrantes" class="section" style="display:none;">
+                <h2>Gestionar integrantes</h2>
+
+                <form id="formIntegrante">
+                    <div class="form-row">
+                        <input type="text" id="nombreIntegrante" name="nombreIntegrante" placeholder="Nombre completo" required>
+                        <input type="text" id="rolIntegrante" name="rolIntegrante" placeholder="Rol (ej. Vocalista, Guitarra)" required>
+                        <input type="text" id="fotoIntegrante" name="fotoIntegrante" placeholder="URL imagen (opcional)">
+                        <button type="submit" class="btn-primary">Agregar</button>
+                    </div>
+                </form>
+
+                <table aria-describedby="tablaIntegrantes">
+                    <thead>
+                        <tr>
+                            <th>Nombre</th>
+                            <th>Rol</th>
+                            <th>Foto</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaIntegrantes">
+                        <!-- Aquí el CRUD insertará filas -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Presentaciones -->
+            <section id="presentaciones" class="section" style="display:none;">
+                <h2>Gestionar presentaciones</h2>
+
+                <form id="formPresentacion">
+                    <div class="form-row">
+                        <input type="text" id="lugar" name="lugar" placeholder="Lugar (ej. Estadio X)" required>
+                        <input type="date" id="fechaPresentacion" name="fechaPresentacion" required>
+                        <input type="time" id="horaPresentacion" name="horaPresentacion">
+                        <input type="number" id="precio" name="precio" placeholder="Precio (USD)">
+                        <button type="submit" class="btn-primary">Agregar presentación</button>
+                    </div>
+                </form>
+
+                <table aria-describedby="tablaPresentaciones">
+                    <thead>
+                        <tr>
+                            <th>Lugar</th>
+                            <th>Fecha</th>
+                            <th>Hora</th>
+                            <th>Precio</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaPresentaciones">
+                        <!-- Aquí Firebase/CRUD mostrará las filas -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Discografía -->
+            <section id="discografia" class="section" style="display:none;">
+                <h2>Gestionar discografía</h2>
+
+                <form id="formDisco">
+                    <div class="form-row">
+                        <input type="text" id="nombreDisco" name="nombreDisco" placeholder="Nombre del disco" required>
+                        <input type="number" id="yearDisco" name="yearDisco" placeholder="Año" required>
+                        <input type="text" id="formatoDisco" name="formatoDisco" placeholder="Formato (LP, Single, etc.)">
+                        <input type="text" id="coverDisco" name="coverDisco" placeholder="URL cover (opcional)">
+                        <button type="submit" class="btn-primary">Agregar disco</button>
+                    </div>
+                </form>
+
+                <table aria-describedby="tablaDiscos">
+                    <thead>
+                        <tr>
+                            <th>Disco</th>
+                            <th>Año</th>
+                            <th>Formato</th>
+                            <th>Cover</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tablaDiscos">
+                        <!-- Aquí se listarán los discos -->
+                    </tbody>
+                </table>
+            </section>
+
+            <!-- Aprobaciones / ejemplo (puede usarse para aprobar presentaciones o publicaciones) -->
+            <section id="aprobaciones" class="section" style="display:none;">
+                <h2>Aprobaciones pendientes</h2>
+                <p style="color:var(--muted);">Aquí aparecerán las propuestas que el administrador general debe aprobar o rechazar.</p>
+                <table>
+                    <thead>
+                        <tr><th>Tipo</th><th>Título / Lugar</th><th>Enviado por</th><th>Fecha</th><th>Acciones</th></tr>
+                    </thead>
+                    <tbody id="tablaAprobaciones"></tbody>
+                </table>
+            </section>
+
+            <!-- Configuración -->
+            <section id="config" class="section" style="display:none;">
+                <h2>Configuración</h2>
+                <p style="color:var(--muted);">Opciones generales del panel (perfil, permisos, etc.).</p>
+                <div style="display:flex;gap:12px;flex-wrap:wrap">
+                    <button class="btn-primary" id="btnDescargarData">Exportar datos (CSV)</button>
+                    <button class="btn-primary" id="btnLimpiar">Limpiar caché</button>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Admin JS -->
+    <script>
+        // Script inline para navegación básica entre secciones
+        // La lógica de CRUD y autenticación será manejada por admin.js y auth.js
+        (function () {
+            const links = document.querySelectorAll('.nav-admin .btn-link');
+            const sections = document.querySelectorAll('main .section');
+            const titulo = document.getElementById('titulo-seccion');
+
+            function hideAll() {
+                sections.forEach(s => s.style.display = 'none');
+            }
+
+            function showSection(id) {
+                hideAll();
+                const el = document.getElementById(id);
+                if (el) {
+                    el.style.display = 'block';
+                    titulo.textContent = {
+                        integrantes: 'Gestionar Integrantes',
+                        presentaciones: 'Gestionar Presentaciones',
+                        discografia: 'Gestionar Discografía',
+                        aprobaciones: 'Aprobaciones pendientes',
+                        config: 'Configuración del panel'
+                    }[id] || 'Panel Administrativo';
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                }
+            }
+
+            // Configurar clicks en navegación
+            links.forEach(a => {
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const sec = a.getAttribute('data-section');
+                    showSection(sec);
+                });
+            });
+
+            // Mostrar primera sección por defecto
+            showSection('integrantes');
+
+            // TODO: Activar cuando Firebase esté configurado
+            // checkAuthStatus(); 
+            // initializeAdminPanel(user);
+        })();
+    </script>
+
+    <!-- Scripts de autenticación y CRUD con Firebase -->
+    <script src="./js/auth.js"></script>
+    <script src="./js/admin.js"></script>
+</body>
+
+</html>
