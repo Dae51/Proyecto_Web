@@ -13,92 +13,179 @@
     padding: 0;
 }
 
+/* NAVBAR MODERNO Y RESPONSIVO */
 header {
-    background-color: var(--negro);
+    background: linear-gradient(135deg, var(--negro) 0%, #1a1a1a 100%);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.navbar-container {
     display: flex;
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 10px 20px;
-    flex-wrap: wrap;
-}
-
-.parte-superior img {
-    width: 200px;
-}
-
-header nav ul {
-    list-style: none; 
-    display: flex; 
-    gap: 10px; 
+    justify-content: flex-start;
     align-items: center;
+    gap: 1rem;
+    padding: 0.8rem 1.5rem;
+    max-width: 100%;
+    position: relative;
+}
+
+.navbar-brand img {
+    width: 180px;
+    height: auto;
+    transition: transform 0.3s ease;
+}
+
+.navbar-brand img:hover {
+    transform: scale(1.05);
+}
+
+/* Menú Hamburguesa */
+.hamburger {
+    display: none;
+    flex-direction: column;
+    background: none;
+    border: none;
+    cursor: pointer;
+    gap: 6px;
+    padding: 8px;
+}
+
+.hamburger span {
+    width: 28px;
+    height: 3px;
+    background-color: var(--amarillo);
+    border-radius: 2px;
+    transition: all 0.3s ease;
+}
+
+.hamburger.active span:nth-child(1) {
+    transform: rotate(45deg) translate(10px, 10px);
+}
+
+.hamburger.active span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.active span:nth-child(3) {
+    transform: rotate(-45deg) translate(7px, -7px);
+}
+
+/* Navbar Menu */
+.navbar-menu {
+    display: flex;
+    align-items: center;
+}
+
+.nav-list {
+    list-style: none;
+    display: flex;
+    gap: 0.5rem;
     margin: 0;
     padding: 0;
-    flex-wrap: wrap;
 }
 
-header nav {
-    margin-right: 5%;
+.nav-item {
+    position: relative;
 }
 
-header nav a {
+.nav-link {
     text-decoration: none;
-    font-size: 16px;
-    padding: 15px 25px;
-    background-color: var(--amarillo); 
-    color: var(--negro); 
-    font-weight: bold; 
-    border-radius: 10px; 
-    transition: all 0.3s ease-in-out;
+    color: var(--negro);
+    background-color: var(--amarillo);
+    padding: 12px 22px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: all 0.3s ease;
+    display: block;
     white-space: nowrap;
 }
 
-header nav a:hover {
+.nav-link:hover {
     background-color: #e4ca64;
-    color: white;
-    font-weight: bold;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(244, 208, 63, 0.3);
+}
+
+.nav-link:active {
+    transform: translateY(-1px);
 }
 
 /* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 768px) {
+    .hamburger {
+        display: flex;
+        position: absolute;
+        right: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .navbar-menu {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: linear-gradient(180deg, var(--negro) 0%, #1a1a1a 100%);
+        flex-direction: column;
+        align-items: stretch;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .navbar-menu.active {
+        max-height: 500px;
+    }
+
+    .nav-list {
+        flex-direction: column;
+        gap: 0;
+        width: 100%;
+    }
+
+    .nav-item {
+        width: 100%;
+    }
+
+    .nav-link {
+        padding: 14px 20px;
+        border-radius: 0;
+        font-size: 14px;
+        border-bottom: 1px solid rgba(244, 208, 63, 0.1);
+    }
+
+    .nav-link:hover {
+        background-color: rgba(244, 208, 63, 0.9);
+        padding-left: 24px;
+    }
+
+    .navbar-brand img {
+        width: 140px;
+    }
+}
+
 @media (max-width: 480px) {
-    header {
-        flex-direction: column;
-        align-items: center;
-        padding: 15px 10px;
+    .navbar-container {
+        padding: 0.6rem 1rem;
     }
 
-    .parte-superior {
-        width: 100%;
-        text-align: center;
-        margin-bottom: 15px;
+    .navbar-brand img {
+        width: 120px;
     }
 
-    .parte-superior img {
-        width: 150px;
+    .hamburger span {
+        width: 24px;
+        height: 2.5px;
     }
 
-    header nav {
-        margin: 0;
-        width: 100%;
-    }
-
-    header nav ul {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        width: 100%;
-        padding: 0 10px;
-    }
-
-    header nav ul li {
-        width: 100%;
-        display: flex;
-    }
-
-    header nav a {
-        width: 100%;
-        text-align: center;
-        padding: 12px 20px;
-        font-size: 15px;
+    .nav-link {
+        padding: 12px 16px;
+        font-size: 13px;
     }
 }
 
