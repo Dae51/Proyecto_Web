@@ -10,6 +10,8 @@ import { Validation } from './service/validator.js';
 // Importar funciones de noticias.js
 import { crearNoticia, obtenerTodasNoticias, escucharNoticiasEnTiempoReal, obtenerNoticiaPorId, actualizarNoticia, eliminarNoticia } from './service/noticias.js';
 
+import { loginUser, signup  } from './service/auth.js';
+
 // CRUD INTEGRANTES - Conectado a Firestore collection "miembros"
 // ================================================================
 
@@ -78,12 +80,11 @@ function renderIntegrantes(miembros) {
 
     // Construir filas de forma simple
     tabla.innerHTML = miembros.map(m => {
-        const foto = m.foto ? `<img src="${m.foto}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;" alt="${m.nombre}">` : '<div style="width:50px;height:50px;background:#333;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;">Sin foto</div>';
         return `
             <tr>
                 <td>${m.nombre}</td>
                 <td>${m.rol}</td>
-                <td>${foto}</td>
+                <td><img src="${m.foto}" alt="${m.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;"></td>
                 <td>
                     <button data-id="${m.id}" class="btn-action btn-edit">✏️ Editar</button>
                     <button data-id="${m.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
@@ -379,13 +380,12 @@ function renderDiscos(discos) {
   }
 
   tabla.innerHTML = discos.map(d => {
-    const cover = d.cover ? `<img src="${d.cover}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;" alt="${d.nombre}">` : '<div style="width:50px;height:50px;background:#333;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;">Sin portada</div>';
     return `
       <tr>
         <td>${d.nombre}</td>
         <td>${d.year}</td>
         <td>${d.formato || '-'}</td>
-        <td>${cover}</td>
+        <td><img src="${d.cover}" alt="${d.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;"></img></td>
         <td>
           <button data-id="${d.id}" class="btn-action btn-edit">✏️ Editar</button>
           <button data-id="${d.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
@@ -530,7 +530,7 @@ function cancelarEdicion() {
  */
 function showNotification(mensaje, tipo = 'info') {
     // PLACEHOLDER: Implementar notificaciones visuales
-    console.log(`[${tipo.toUpperCase()}] ${mensaje}`);
+    alert(`[${tipo.toUpperCase()}] ${mensaje}`);
 }
 
 // INICIALIZACIÓN
@@ -765,6 +765,7 @@ async function deleteNoticia(noticiaId) {
 
 // Al cargar admin.html
 document.addEventListener('DOMContentLoaded', () => {
+    initializeAdminPanel();
     // PLACEHOLDER: Verificar autenticación y inicializar
     // checkAuthStatus() debería ser llamado desde auth.js
     // Si el usuario no está autenticado, será redirigido a login.html

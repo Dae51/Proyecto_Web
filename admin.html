@@ -44,7 +44,6 @@
                 <li><a href="#" class="btn-link" data-section="presentaciones"> Presentaciones</a></li>
                 <li><a href="#" class="btn-link" data-section="discografia"> Discografía</a></li>
                 <li><a href="#" class="btn-link" data-section="noticias"> Noticias</a></li>
-                <li><a href="#" class="btn-link" data-section="config"> Configuración</a></li>
             </ul>
 
             <button id="logoutBtn" class="logout">Cerrar sesión</button>
@@ -56,8 +55,6 @@
 
             <!-- Integrantes -->
             <section id="integrantes" class="section" style="display:none;" onsubmit="event.preventDefault()">
-                <h2>Gestionar integrantes</h2>
-
                 <form id="formIntegrante">
                     <div class="form-row">
                         <input type="text" id="nombreIntegrante" name="nombreIntegrante" placeholder="Nombre completo"
@@ -66,7 +63,7 @@
                             placeholder="Rol (ej. Vocalista, Guitarra)" required>
                         <input type="text" id="fotoIntegrante" name="fotoIntegrante"
                             placeholder="URL imagen (opcional)">
-                        <button type="button" class="btn-primary" onclick="addIntegrante()">Agregar</button>
+                        <button type="button" class="btn-primary" onclick="addIntegrante()">Aceptar</button>
                     </div>
                 </form>
 
@@ -87,9 +84,7 @@
 
             <!-- Presentaciones -->
             <section id="presentaciones" class="section" style="display:none;">
-                <h2>Gestionar presentaciones</h2>
-
-                <form id="formPresentacion">
+                <form id="formPresentacion" onsubmit="event.preventDefault()">
                     <div class="form-row">
                         <input type="text" id="lugar" name="lugar" placeholder="Lugar (ej. Estadio X)" required>
                         <input type="date" id="fechaPresentacion" name="fechaPresentacion" required>
@@ -117,9 +112,7 @@
 
             <!-- Discografía -->
             <section id="discografia" class="section" style="display:none;">
-                <h2>Gestionar discografía</h2>
-
-                <form id="formDisco">
+                <form id="formDisco" onsubmit="event.preventDefault()">
                     <div class="form-row">
                         <input type="text" id="nombreDisco" name="nombreDisco" placeholder="Nombre del disco" required>
                         <input type="number" id="yearDisco" name="yearDisco" placeholder="Año" required>
@@ -148,7 +141,6 @@
 
             <!-- noticias / ejemplo -->
             <section id="noticias" class="section" style="display:none;">
-                <h2>Noticias publicadas</h2>
                 <form id="formNoticias" onsubmit="event.preventDefault()">
                     <div class="form-row">
                         <input type="text" id="tituloNoticia" name="tituloNoticia" placeholder="Agregue un titulo" required>
@@ -189,7 +181,7 @@
     <!-- Scripts de autenticación y CRUD con Firebase -->
     <script type="module" src="./js/admin.js" defer></script>
     <script src="./js/content.js"></script>
-    <script src="./js/auth.js" defer></script>
+    <script type="module" src="./js/service/auth.js" defer></script>
 </body>
 
 </html>

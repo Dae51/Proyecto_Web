@@ -1,6 +1,6 @@
-import { getAuth } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
 
-import { db, signInWithEmailAndPassword, createUserWithEmailAndPassword } from './firebase.js';
+import { db} from './firebase.js';
 
 const auth = getAuth();
 
@@ -26,3 +26,5 @@ const signup = async (email, password) => {
         throw error;
     }
 };
+
+export { loginUser, signup };
