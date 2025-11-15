@@ -2,6 +2,10 @@
 // Este archivo maneja todas las operaciones de CRUD en el admin panel
 // Importar funciones de integrantes.js
 import { crearMiembro, obtenerTodosMiembros, escucharMiembrosEnTiempoReal, obtenerMiembroPorId, actualizarMiembro, eliminarMiembro } from './integrantes.js';
+// Importar funciones de discografia.js
+import { crearDisco, obtenerTodosDiscos, escucharDiscosEnTiempoReal, obtenerDiscoPorId, actualizarDisco, eliminarDisco } from './discografia.js';
+// Importar validaciones
+import { Validation } from './service/validator.js';
 
 // CRUD INTEGRANTES - Conectado a Firestore collection "miembros"
 // ================================================================
@@ -306,86 +310,155 @@ async function deletePresentacion(presentacionId) {
  * @param {string} anio - Año de lanzamiento
  * @param {string} imagen - URL de la portada
  */
-async function addDisco(titulo, anio, formato = '', cover = '') {
-    if (!titulo || !anio) {
-        showNotification('Por favor completa nombre y año', 'error');
-        return;
-    }
-
-    try {
-        const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
-        const db = getFirestore();
-        
-        await addDoc(collection(db, 'discografia'), {
-            titulo: titulo.trim(),
-            anio: parseInt(anio),
-            formato: formato.trim() || '',
-            cover: cover.trim() || '',
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-        });
-        
-        console.log('✅ Disco agregado exitosamente');
-        showNotification('Disco agregado exitosamente', 'success');
-        loadDiscos();
-        resetForm('formDisco');
-    } catch (error) {
-        console.error('❌ Error al agregar disco:', error);
-        showNotification(`Error al agregar disco: ${error.message}`, 'error');
-    }
+/**
+ * Leer valores del formulario de disco
+ */
+function leerFormularioDisco() {
+  return {
+    nombre: (document.getElementById('nombreDisco') || {}).value || '',
+    year: (document.getElementById('yearDisco') || {}).value || '',
+    formato: (document.getElementById('formatoDisco') || {}).value || '',
+    cover: (document.getElementById('coverDisco') || {}).value || ''
+  };
 }
 
 /**
- * Obtener todos los discos
+ * Agregar o actualizar disco
+ */
+async function addDisco() {
+  const form = document.getElementById('formDisco');
+  if (!form) return;
+
+  const { nombre, year, formato, cover } = leerFormularioDisco();
+
+  // Validar usando validator.js
+  const validation = Validation.validateAlbum({ nombre, year, formato });
+  if (!validation.ok) {
+    showNotification(validation.errors.join(' '), 'error');
+    return;
+  }
+
+  const editingId = form.dataset.editingId;
+
+  try {
+    const discoData = {
+      nombre: nombre.trim(),
+      year: parseInt(year),
+      formato: formato.trim() || '',
+      cover: cover.trim() || ''
+    };
+
+    if (editingId) {
+      await actualizarDisco(editingId, discoData);
+      showNotification('Disco actualizado exitosamente', 'success');
+    } else {
+      await crearDisco(discoData);
+      showNotification('Disco agregado exitosamente', 'success');
+    }
+
+    resetForm('formDisco');
+  } catch (error) {
+    console.error('❌ Error al guardar disco:', error);
+    showNotification(`Error: ${error.message}`, 'error');
+  }
+}
+
+/**
+ * Renderizar tabla de discos
+ */
+function renderDiscos(discos) {
+  const tabla = document.getElementById('tablaDiscos');
+  if (!tabla) return;
+
+  if (!discos || discos.length === 0) {
+    tabla.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;">No hay discos aún</td></tr>';
+    return;
+  }
+
+  tabla.innerHTML = discos.map(d => {
+    const cover = d.cover ? `<img src="${d.cover}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;" alt="${d.nombre}">` : '<div style="width:50px;height:50px;background:#333;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;">Sin portada</div>';
+    return `
+      <tr>
+        <td>${d.nombre}</td>
+        <td>${d.year}</td>
+        <td>${d.formato || '-'}</td>
+        <td>${cover}</td>
+        <td>
+          <button data-id="${d.id}" class="btn-action btn-edit">✏️ Editar</button>
+          <button data-id="${d.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+        </td>
+      </tr>`;
+  }).join('');
+
+  // Añadir listeners a botones
+  tabla.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', (e) => editarDisco(e.currentTarget.dataset.id)));
+  tabla.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', (e) => deleteDisco(e.currentTarget.dataset.id)));
+}
+
+/**
+ * Cargar y escuchar discos en tiempo real
  */
 function loadDiscos() {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('discografia')
-    //     .orderBy('anio', 'desc')
-    //     .onSnapshot(snapshot => {
-    //         const tablaDiscos = document.getElementById('tablaDiscos');
-    //         tablaDiscos.innerHTML = '';
-    //         
-    //         snapshot.forEach(doc => {
-    //             const disco = doc.data();
-    //             const row = `
-    //                 <tr>
-    //                     <td>${disco.titulo}</td>
-    //                     <td>${disco.anio}</td>
-    //                     <td>
-    //                         <button onclick="editDisco('${doc.id}')" class="btn-action">Editar</button>
-    //                         <button onclick="deleteDisco('${doc.id}')" class="btn-action delete">Eliminar</button>
-    //                     </td>
-    //                 </tr>
-    //             `;
-    //             tablaDiscos.innerHTML += row;
-    //         });
-    //     });
-
-    console.log('loadDiscos() listo para Firebase');
+  try {
+    escucharDiscosEnTiempoReal(renderDiscos);
+  } catch (error) {
+    console.error('❌ Error cargando discos:', error);
+  }
 }
 
 /**
  * Editar un disco
- * @param {string} discoId - ID del disco
  */
-function editDisco(discoId) {
-    // PLACEHOLDER: Lógica real con Firebase
-    console.log('editDisco() listo para Firebase:', discoId);
+async function editarDisco(discoId) {
+  try {
+    const disco = await obtenerDiscoPorId(discoId);
+    if (!disco) {
+      showNotification('Disco no encontrado', 'error');
+      return;
+    }
+
+    document.getElementById('nombreDisco').value = disco.nombre || '';
+    document.getElementById('yearDisco').value = disco.year || '';
+    document.getElementById('formatoDisco').value = disco.formato || '';
+    document.getElementById('coverDisco').value = disco.cover || '';
+
+    const form = document.getElementById('formDisco');
+    form.dataset.editingId = discoId;
+    const submitBtn = form.querySelector('button[type="submit"]');
+    if (submitBtn) submitBtn.textContent = 'Actualizar';
+
+    const cancelBtn = document.getElementById('btnCancelarDisco');
+    if (cancelBtn) cancelBtn.style.display = 'block';
+
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showNotification('Formulario listo para editar', 'info');
+  } catch (error) {
+    console.error('❌ Error:', error);
+    showNotification(`Error al cargar disco: ${error.message}`, 'error');
+  }
 }
 
 /**
  * Eliminar un disco
- * @param {string} discoId - ID del disco
  */
-function deleteDisco(discoId) {
-    if (confirm('¿Estás seguro de que quieres eliminar este disco?')) {
-        // PLACEHOLDER: Lógica real con Firebase
-        // db.collection('discografia').doc(discoId).delete()
+async function deleteDisco(discoId) {
+  if (!confirm('¿Estás seguro de que quieres eliminar este disco?')) {
+    return;
+  }
 
-        console.log('deleteDisco() listo para Firebase:', discoId);
-    }
+  try {
+    await eliminarDisco(discoId);
+    showNotification('Disco eliminado', 'success');
+  } catch (error) {
+    console.error('❌ Error:', error);
+    showNotification(`Error al eliminar disco: ${error.message}`, 'error');
+  }
 }
+
+// Exponer funciones para compatibilidad con llamadas inline en el HTML
+window.addDisco = addDisco;
+window.editarDisco = editarDisco;
+window.deleteDisco = deleteDisco;
 
 // UTILIDADES
 // ===========
@@ -423,6 +496,15 @@ function resetForm(formId) {
             
             // Ocultar botón cancelar
             const cancelBtn = document.getElementById('btnCancelar');
+            if (cancelBtn) {
+                cancelBtn.style.display = 'none';
+            }
+        }
+        if (formId === 'formDisco') {
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) btn.textContent = 'Agregar disco';
+            
+            const cancelBtn = document.getElementById('btnCancelarDisco');
             if (cancelBtn) {
                 cancelBtn.style.display = 'none';
             }
@@ -506,13 +588,7 @@ function setupFormListeners() {
     if (formDisco) {
         formDisco.addEventListener('submit', (e) => {
             e.preventDefault();
-            const titulo = document.getElementById('tituloDisco').value;
-            const anio = document.getElementById('anioDisco').value;
-            const imagen = document.getElementById('imagenDisco').value;
-            
-            if (titulo && anio) {
-                addDisco(titulo, anio, imagen);
-            }
+            addDisco();
         });
     }
     
