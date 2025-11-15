@@ -40,11 +40,11 @@
             <p style="color:#e4ca64;font-size:14px">Usuario: administrador</p>
 
             <ul class="nav-admin">
-                <li><a href="#" class="btn-link" data-section="integrantes">👥 Integrantes</a></li>
-                <li><a href="#" class="btn-link" data-section="presentaciones">📅 Presentaciones</a></li>
-                <li><a href="#" class="btn-link" data-section="discografia">💿 Discografía</a></li>
-                <li><a href="#" class="btn-link" data-section="aprobaciones">🔎 Aprobaciones</a></li>
-                <li><a href="#" class="btn-link" data-section="config">⚙ Configuración</a></li>
+                <li><a href="#" class="btn-link" data-section="integrantes"> Integrantes</a></li>
+                <li><a href="#" class="btn-link" data-section="presentaciones"> Presentaciones</a></li>
+                <li><a href="#" class="btn-link" data-section="discografia"> Discografía</a></li>
+                <li><a href="#" class="btn-link" data-section="noticias"> Noticias</a></li>
+                <li><a href="#" class="btn-link" data-section="config"> Configuración</a></li>
             </ul>
 
             <button id="logoutBtn" class="logout">Cerrar sesión</button>
@@ -146,22 +146,30 @@
                 </table>
             </section>
 
-            <!-- Aprobaciones / ejemplo (puede usarse para aprobar presentaciones o publicaciones) -->
-            <section id="aprobaciones" class="section" style="display:none;">
-                <h2>Aprobaciones pendientes</h2>
-                <p style="color:var(--muted);">Aquí aparecerán las propuestas que el administrador general debe aprobar
-                    o rechazar.</p>
+            <!-- noticias / ejemplo -->
+            <section id="noticias" class="section" style="display:none;">
+                <h2>Noticias publicadas</h2>
+                <form id="formNoticias" onsubmit="event.preventDefault()">
+                    <div class="form-row">
+                        <input type="text" id="tituloNoticia" name="tituloNoticia" placeholder="Agregue un titulo" required>
+                        <input type="text" id="descripcionNoticia" name="descripcionNoticia" placeholder="Descripción" required>
+                        <input type="text" id="escritosNoticia" name="escritosNoticia" placeholder="Autor" required>
+                        <input type="date" id="fechaNoticia" name="fechaNoticia" required>
+                        <button type="submit" class="btn-primary" onclick="addNoticia()">Agregar Noticia</button>
+                    </div>
+                    <br>
+                </form>
                 <table>
                     <thead>
                         <tr>
-                            <th>Tipo</th>
-                            <th>Título / Lugar</th>
+                            <th>Titulo</th>
+                            <th>Descripcion</th>
                             <th>Enviado por</th>
                             <th>Fecha</th>
                             <th>Acciones</th>
                         </tr>
                     </thead>
-                    <tbody id="tablaAprobaciones"></tbody>
+                    <tbody id="tablaNoticias"></tbody>
                 </table>
             </section>
 
@@ -179,9 +187,9 @@
 
 
     <!-- Scripts de autenticación y CRUD con Firebase -->
+    <script type="module" src="./js/admin.js" defer></script>
     <script src="./js/content.js"></script>
     <script src="./js/auth.js" defer></script>
-    <script type="module" src="./js/admin.js" defer></script>
 </body>
 
 </html>

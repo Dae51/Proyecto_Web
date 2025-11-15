@@ -3,6 +3,9 @@
 // Importar funciones de integrantes.js
 import { crearMiembro, obtenerTodosMiembros, escucharMiembrosEnTiempoReal, obtenerMiembroPorId, actualizarMiembro, eliminarMiembro } from './integrantes.js';
 
+// Importar funciones de noticias.js
+import { crearNoticia, obtenerTodasNoticias, escucharNoticiasEnTiempoReal, obtenerNoticiaPorId, actualizarNoticia, eliminarNoticia } from './service/noticias.js';
+
 // CRUD INTEGRANTES - Conectado a Firestore collection "miembros"
 // ================================================================
 
@@ -468,6 +471,7 @@ function initializeAdminPanel(user) {
     loadIntegrantes();
     loadPresentaciones();
     loadDiscos();
+    loadNoticias();
     
     // Event listeners para formularios
     setupFormListeners();
@@ -521,6 +525,166 @@ function setupFormListeners() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', logoutUser);
     }
+
+    // Formulario Noticias
+const formNoticias = document.getElementById("formNoticias");
+if (formNoticias) {
+    formNoticias.addEventListener("submit", (e) => {
+        e.preventDefault();
+        addNoticia();
+    });
+}
+}
+
+// CRUD NOTICIAS
+// ==============
+
+/**
+ * Leer valores del formulario de noticia
+ */
+function leerFormularioNoticia() {
+    return {
+        titulo: (document.getElementById('tituloNoticia') || {}).value || '',
+        descripcion: (document.getElementById('descripcionNoticia') || {}).value || '',
+        autor: (document.getElementById('escritosNoticia') || {}).value || '',
+        fecha: (document.getElementById('fechaNoticia') || {}).value || ''
+    };
+}
+
+/**
+ * Añadir o actualizar noticia según el estado del formulario
+ */
+async function addNoticia() {
+    const form = document.getElementById('formNoticias');
+    if (!form) return;
+
+    const { titulo, descripcion, autor, fecha } = leerFormularioNoticia();
+
+    if (!titulo.trim() || !descripcion.trim() || !autor.trim() || !fecha) {
+        showNotification('Por favor completa todos los campos', 'error');
+        return;
+    }
+
+    const editingId = form.dataset.editingId;
+
+    try {
+        if (editingId) {
+            await actualizarNoticia(editingId, { 
+                titulo: titulo.trim(), 
+                descripcion: descripcion.trim(), 
+                autor: autor.trim(), 
+                fecha: new Date(fecha) 
+            });
+            showNotification('Noticia actualizada exitosamente', 'success');
+        } else {
+            await crearNoticia({ 
+                titulo: titulo.trim(), 
+                descripcion: descripcion.trim(), 
+                autor: autor.trim(), 
+                fecha: new Date(fecha) 
+            });
+            showNotification('Noticia agregada exitosamente', 'success');
+        }
+
+        resetForm('formNoticias');
+    } catch (error) {
+        console.error('❌ Error al guardar noticia:', error);
+        showNotification(`Error: ${error.message}`, 'error');
+    }
+}
+
+// Exponer funciones para compatibilidad con llamadas inline en el HTML
+window.addNoticia = addNoticia;
+window.editarNoticia = editarNoticia;
+window.deleteNoticia = deleteNoticia;
+
+/**
+ * Obtener todas las noticias en tiempo real (Firestore)
+ */
+function renderNoticias(noticias) {
+    const tabla = document.getElementById('tablaNoticias');
+    if (!tabla) return;
+
+    if (!noticias || noticias.length === 0) {
+        tabla.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;">No hay noticias aún</td></tr>';
+        return;
+    }
+
+    // Construir filas de forma simple
+    tabla.innerHTML = noticias.map(n => {
+        const fechaFormato = n.fecha instanceof Date ? n.fecha.toLocaleDateString() : new Date(n.fecha).toLocaleDateString();
+        return `
+            <tr>
+                <td>${n.titulo}</td>
+                <td>${n.descripcion}</td>
+                <td>${n.autor}</td>
+                <td>${fechaFormato}</td>
+                <td>
+                    <button data-id="${n.id}" class="btn-action btn-edit">✏️ Editar</button>
+                    <button data-id="${n.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+                </td>
+            </tr>`;
+    }).join('');
+
+    // Añadir listeners a los botones (delegación ligera)
+    tabla.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', (e) => editarNoticia(e.currentTarget.dataset.id)));
+    tabla.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', (e) => deleteNoticia(e.currentTarget.dataset.id)));
+}
+
+async function loadNoticias() {
+    try {
+        escucharNoticiasEnTiempoReal(renderNoticias);
+    } catch (error) {
+        console.error('❌ Error cargando noticias:', error);
+    }
+}
+
+/**
+ * Editar una noticia
+ * @param {string} noticiaId - ID de la noticia
+ */
+async function editarNoticia(noticiaId) {
+    try {
+        const noticia = await obtenerNoticiaPorId(noticiaId);
+        document.getElementById('tituloNoticia').value = noticia.titulo || '';
+        document.getElementById('descripcionNoticia').value = noticia.descripcion || '';
+        document.getElementById('escritosNoticia').value = noticia.autor || '';
+        
+        const fechaObj = noticia.fecha instanceof Date ? noticia.fecha : new Date(noticia.fecha);
+        document.getElementById('fechaNoticia').value = fechaObj.toISOString().split('T')[0];
+
+        const form = document.getElementById('formNoticias');
+        form.dataset.editingId = noticiaId;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.textContent = 'Actualizar';
+
+        const cancelBtn = document.getElementById('btnCancelarNoticia');
+        if (cancelBtn) cancelBtn.style.display = 'block';
+
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showNotification('Formulario listo para editar', 'info');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al cargar noticia: ${error.message}`, 'error');
+    }
+}
+
+/**
+ * Eliminar una noticia
+ * @param {string} noticiaId - ID de la noticia
+ */
+async function deleteNoticia(noticiaId) {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta noticia?')) {
+        return;
+    }
+    
+    try {
+        await eliminarNoticia(noticiaId);
+        showNotification('Noticia eliminada', 'success');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al eliminar noticia: ${error.message}`, 'error');
+    }
 }
 
 // Al cargar admin.html
@@ -531,3 +695,4 @@ document.addEventListener('DOMContentLoaded', () => {
     
     console.log('admin.js cargado. Esperando Firebase Auth...');
 });
+

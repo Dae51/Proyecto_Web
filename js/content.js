@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 integrantes: 'Gestionar Integrantes',
                 presentaciones: 'Gestionar Presentaciones',
                 discografia: 'Gestionar Discografía',
-                aprobaciones: 'Aprobaciones pendientes',
+                noticas: 'Noticias Actualizadas',
                 config: 'Configuración del panel'
             }[id] || 'Panel Administrativo';
             window.scrollTo({ top: 0, behavior: 'smooth' });
