@@ -5,23 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login - Panel Admin</title>
     <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/login.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    
-    <!-- Firebase SDK - Reemplazar con tu configuración real -->
-    <!-- <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-app.js"></script>
-    <script src="https://www.gstatic.com/firebasejs/10.5.0/firebase-auth.js"></script>
-    <script>
-        // TODO: Reemplazar con tu configuración de Firebase
-        // const firebaseConfig = {
-        //     apiKey: "YOUR_API_KEY",
-        //     authDomain: "your-app.firebaseapp.com",
-        //     projectId: "your-project-id",
-        //     storageBucket: "your-project-id.appspot.com",
-        //     messagingSenderId: "your-sender-id",
-        //     appId: "your-app-id"
-        // };
-        // firebase.initializeApp(firebaseConfig);
-    </script> -->
 </head>
 <body class="login-body">
 
@@ -29,15 +14,22 @@
         <div class="login-card">
             <div class="login-header">
                 <img src="./img/logo_queen.png" alt="Queen Logo" class="login-logo">
-                <h1>Iniciar sesión</h1>
+                <h1 id="mainTitle">Iniciar sesión</h1>
             </div>
 
-            <form id="loginForm" class="login-form">
+            <!-- Tabs para cambiar entre Login y Registro -->
+            <div class="auth-tabs">
+                <button type="button" class="tab-button active" id="loginTab">Ingresar</button>
+                <button type="button" class="tab-button" id="signupTab">Registrarse</button>
+            </div>
+
+            <!-- Formulario de Login -->
+            <form id="loginForm" class="login-form form-container active" onsubmit="event.preventDefault()">
                 <div class="form-group">
-                    <label for="email" class="form-label">Correo Electrónico</label>
+                    <label for="loginEmail" class="form-label">Correo Electrónico</label>
                     <input 
                         type="email" 
-                        id="email" 
+                        id="loginEmail" 
                         class="form-control" 
                         placeholder="tu@correo.com"
                         required
@@ -45,26 +37,71 @@
                 </div>
 
                 <div class="form-group">
-                    <label for="password" class="form-label">Contraseña</label>
+                    <label for="loginPassword" class="form-label">Contraseña</label>
                     <input 
                         type="password" 
-                        id="password" 
+                        id="loginPassword" 
                         class="form-control" 
                         placeholder="••••••••"
                         required
                     >
                 </div>
 
-                <button type="submit" class="btn-login">Ingresar</button>
+                <button type="submit" class="btn-login" id="loginBtn">
+                    <span id="loginBtnText">Ingresar</span>
+                    <span class="loading" id="loginLoading">⏳</span>
+                </button>
             </form>
 
-            <p id="loginError" class="error-msg"></p>
+            <!-- Formulario de Registro -->
+            <form id="signupForm" class="login-form form-container signup-form">
+                <div class="form-group">
+                    <label for="signupEmail" class="form-label">Correo Electrónico</label>
+                    <input 
+                        type="email" 
+                        id="signupEmail" 
+                        class="form-control" 
+                        placeholder="tu@correo.com"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="signupPassword" class="form-label">Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="signupPassword" 
+                        class="form-control" 
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword" class="form-label">Confirmar Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="confirmPassword" 
+                        class="form-control" 
+                        placeholder="••••••••"
+                        required
+                    >
+                </div>
+
+                <button type="submit" class="btn-login" id="signupBtn">
+                    <span id="signupBtnText">Registrarse</span>
+                    <span class="loading" id="signupLoading">⏳</span>
+                </button>
+            </form>
+
+            <p id="messageBox" class="error-msg"></p>
+            <p id="successBox" class="success-msg"></p>
         </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
     
-    <!-- Scripts - El auth.js se carga primero después de Firebase -->
-    <script type="module" src="./js/auth.js"></script>
+    <!-- Scripts - El auth.js es el servicio de Firebase -->
+    <script type="module" src="./js/login-controller.js"></script>
 </body>
 </html>

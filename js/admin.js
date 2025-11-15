@@ -10,7 +10,8 @@ import { Validation } from './service/validator.js';
 // Importar funciones de noticias.js
 import { crearNoticia, obtenerTodasNoticias, escucharNoticiasEnTiempoReal, obtenerNoticiaPorId, actualizarNoticia, eliminarNoticia } from './service/noticias.js';
 
-import { loginUser, signup  } from './service/auth.js';
+import { loginUser, signup, signOutUser } from './service/auth.js';
+import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
 
 // CRUD INTEGRANTES - Conectado a Firestore collection "miembros"
 // ================================================================
@@ -533,6 +534,23 @@ function showNotification(mensaje, tipo = 'info') {
     alert(`[${tipo.toUpperCase()}] ${mensaje}`);
 }
 
+/**
+ * Cerrar sesión del usuario (Firebase)
+ */
+async function logoutUser() {
+    try {
+        await signOutUser();
+        showNotification('Sesión cerrada correctamente', 'success');
+        // Redirigir al login
+        setTimeout(() => {
+            window.location.href = './login.html';
+        }, 600);
+    } catch (error) {
+        console.error('Error al cerrar sesión:', error);
+        showNotification('Error cerrando sesión: ' + (error.message || ''), 'error');
+    }
+}
+
 // INICIALIZACIÓN
 // ===============
 
@@ -765,11 +783,19 @@ async function deleteNoticia(noticiaId) {
 
 // Al cargar admin.html
 document.addEventListener('DOMContentLoaded', () => {
-    initializeAdminPanel();
-    // PLACEHOLDER: Verificar autenticación y inicializar
-    // checkAuthStatus() debería ser llamado desde auth.js
-    // Si el usuario no está autenticado, será redirigido a login.html
-    
-    console.log('admin.js cargado. Esperando Firebase Auth...');
+    // Inicializar observer de estado de autenticación de Firebase
+    const auth = getAuth();
+    onAuthStateChanged(auth, (user) => {
+        if (user) {
+            // Usuario autenticado: inicializar panel con el objeto user
+            initializeAdminPanel(user);
+        } else {
+            // No autenticado: redirigir al login
+            console.log('Usuario no autenticado. Redirigiendo a login.');
+            window.location.href = './login.html';
+        }
+    });
+
+    console.log('admin.js cargado. Observando estado de autenticación...');
 });
 

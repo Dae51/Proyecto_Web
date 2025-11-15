@@ -1,0 +1,181 @@
+/* ==================== ESTILOS LOGIN Y REGISTRO ==================== */
+
+:root {
+    --primary-color: #9b1d20;
+    --primary-dark: #7a1618;
+    --primary-light: #c92c30;
+    --success-color: #28a745;
+    --danger-color: #dc3545;
+    --gray-light: #f0f0f0;
+    --gray-dark: #333;
+    --transition: all 0.3s ease;
+}
+
+/* Tabs de navegación */
+.auth-tabs {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.tab-button {
+    padding: 12px 35px;
+    border: 2px solid var(--gray-light);
+    background-color: var(--gray-light);
+    color: var(--gray-dark);
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: 600;
+    border-radius: 8px;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.tab-button:hover:not(.active) {
+    background-color: #e0e0e0;
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+}
+
+.tab-button.active {
+    background-color: var(--primary-color);
+    color: white;
+    border-color: var(--primary-color);
+    box-shadow: 0 4px 12px rgba(155, 29, 32, 0.3);
+}
+
+/* Contenedores de formulario */
+.form-container {
+    display: none;
+    animation: slideOut 0.3s ease;
+}
+
+.form-container.active {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+
+/* Animaciones */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(15px);
+    }
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+/* Botones de login/registro */
+.btn-login {
+    width: 100%;
+    padding: 14px;
+    border: none;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: white;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 4px 8px rgba(155, 29, 32, 0.2);
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-login::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.1);
+    transition: left 0.3s ease;
+}
+
+.btn-login:hover:not(:disabled) {
+    background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+    box-shadow: 0 6px 16px rgba(155, 29, 32, 0.4);
+    transform: translateY(-2px);
+}
+
+.btn-login:hover:not(:disabled)::before {
+    left: 100%;
+}
+
+.btn-login:active:not(:disabled) {
+    transform: translateY(0);
+    box-shadow: 0 2px 4px rgba(155, 29, 32, 0.2);
+}
+
+.btn-login:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+/* Indicador de carga */
+.loading {
+    display: none;
+    margin-left: 8px;
+}
+
+.loading.show {
+    display: inline;
+    animation: spin 1s linear infinite;
+}
+
+/* Mensajes de error */
+.error-msg {
+    color: var(--danger-color);
+    font-size: 14px;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #f8d7da;
+    border: 1px solid #f5c6cb;
+    display: none;
+}
+
+.error-msg.show {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
+
+/* Mensajes de éxito */
+.success-msg {
+    color: var(--success-color);
+    font-size: 14px;
+    margin-top: 15px;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #d4edda;
+    border: 1px solid #c3e6cb;
+    display: none;
+}
+
+.success-msg.show {
+    display: block;
+    animation: slideIn 0.3s ease;
+}
