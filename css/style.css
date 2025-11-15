@@ -225,10 +225,15 @@ header {
 }
 
 .titulo-noticias h1 {
-    color: white; 
-    font-size: 2.5em;
-    padding-bottom: 5px;
-    font-family: Arial, sans-serif;
+    font-size: 28px;
+    color: #c7bf27;
+    text-align: center;
+    margin-bottom: 10px;
+    font-family: 'Didact Gothic', sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 20px;
+    font-weight: bold;
 }
 
 .seccion-noticias {
@@ -236,7 +241,14 @@ header {
     flex-wrap: wrap; 
     justify-content: center; 
     padding: 40px 20px;
-    background-color: rgb(52, 10, 69); 
+    background-image: url(../img/queen-landing.jpg);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh; 
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .noticia-link {
