@@ -1,92 +1,144 @@
 /* ======================== FIREBASE ADMIN CRUD ======================== */
 // Este archivo maneja todas las operaciones de CRUD en el admin panel
-// Conectado a Firebase Realtime Database o Firestore
+// Importar funciones de integrantes.js
+import { crearMiembro, obtenerTodosMiembros, escucharMiembrosEnTiempoReal, obtenerMiembroPorId, actualizarMiembro, eliminarMiembro } from './integrantes.js';
 
-// TODO: Inicializar Firebase en el HTML
-
-// CRUD INTEGRANTES
-// ==================
+// CRUD INTEGRANTES - Conectado a Firestore collection "miembros"
+// ================================================================
 
 /**
- * Agregar un nuevo integrante
+ * Agregar un nuevo integrante (Firestore)
  * @param {string} nombre - Nombre del integrante
  * @param {string} rol - Rol (vocalista, guitarra, etc.)
  * @param {string} fotoUrl - URL de la foto (opcional)
  */
-function addIntegrante(nombre, rol, fotoUrl = '') {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('integrantes').add({
-    //     nombre: nombre,
-    //     rol: rol,
-    //     foto: fotoUrl,
-    //     createdAt: new Date()
-    // })
-    // .then(docRef => {
-    //     console.log('Integrante agregado con ID:', docRef.id);
-    //     loadIntegrantes(); // Recargar tabla
-    //     resetForm('formIntegrante');
-    // })
-    // .catch(error => console.error('Error:', error));
-
-    console.log('addIntegrante() listo para Firebase:', { nombre, rol, fotoUrl });
+// Leer valores del formulario de integrante
+function leerFormularioIntegrante() {
+    return {
+        nombre: (document.getElementById('nombreIntegrante') || {}).value || '',
+        rol: (document.getElementById('rolIntegrante') || {}).value || '',
+        foto: (document.getElementById('fotoIntegrante') || {}).value || ''
+    };
 }
 
+// Añadir o actualizar integrante según el estado del formulario
+async function addIntegrante() {
+    const form = document.getElementById('formIntegrante');
+    if (!form) return;
+
+    const { nombre, rol, foto } = leerFormularioIntegrante();
+
+    if (!nombre.trim() || !rol.trim()) {
+        showNotification('Por favor completa nombre y rol', 'error');
+        return;
+    }
+
+    const editingId = form.dataset.editingId;
+
+    try {
+        if (editingId) {
+            await actualizarMiembro(editingId, { nombre: nombre.trim(), rol: rol.trim(), foto: foto.trim() });
+            showNotification('Integrante actualizado exitosamente', 'success');
+        } else {
+            await crearMiembro({ nombre: nombre.trim(), rol: rol.trim(), foto: foto.trim() });
+            showNotification('Integrante agregado exitosamente', 'success');
+        }
+
+        resetForm('formIntegrante');
+    } catch (error) {
+        console.error('❌ Error al guardar integrante:', error);
+        showNotification(`Error: ${error.message}`, 'error');
+    }
+}
+
+// Exponer las funciones que se llaman desde el HTML inline
+// Exponer funciones para compatibilidad con llamadas inline en el HTML
+window.addIntegrante = addIntegrante;
+window.editarIntegrante = editarIntegrante;
+window.deleteIntegrante = deleteIntegrante;
+
 /**
- * Obtener todos los integrantes
+ * Obtener todos los integrantes en tiempo real (Firestore)
  */
-function loadIntegrantes() {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('integrantes')
-    //     .orderBy('createdAt', 'desc')
-    //     .onSnapshot(snapshot => {
-    //         const tablaIntegrantes = document.getElementById('tablaIntegrantes');
-    //         tablaIntegrantes.innerHTML = '';
-    //         
-    //         snapshot.forEach(doc => {
-    //             const integrante = doc.data();
-    //             const row = `
-    //                 <tr>
-    //                     <td>${integrante.nombre}</td>
-    //                     <td>${integrante.rol}</td>
-    //                     <td>
-    //                         <button onclick="editIntegrante('${doc.id}')" class="btn-action">Editar</button>
-    //                         <button onclick="deleteIntegrante('${doc.id}')" class="btn-action delete">Eliminar</button>
-    //                     </td>
-    //                 </tr>
-    //             `;
-    //             tablaIntegrantes.innerHTML += row;
-    //         });
-    //     });
+function renderIntegrantes(miembros) {
+    const tabla = document.getElementById('tablaIntegrantes');
+    if (!tabla) return;
 
-    console.log('loadIntegrantes() listo para Firebase');
+    if (!miembros || miembros.length === 0) {
+        tabla.innerHTML = '<tr><td colspan="4" style="text-align:center;color:#999;">No hay integrantes aún</td></tr>';
+        return;
+    }
+
+    // Construir filas de forma simple
+    tabla.innerHTML = miembros.map(m => {
+        const foto = m.foto ? `<img src="${m.foto}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;" alt="${m.nombre}">` : '<div style="width:50px;height:50px;background:#333;border-radius:4px;display:flex;align-items:center;justify-content:center;color:#999;font-size:11px;">Sin foto</div>';
+        return `
+            <tr>
+                <td>${m.nombre}</td>
+                <td>${m.rol}</td>
+                <td>${foto}</td>
+                <td>
+                    <button data-id="${m.id}" class="btn-action btn-edit">✏️ Editar</button>
+                    <button data-id="${m.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+                </td>
+            </tr>`;
+    }).join('');
+
+    // Añadir listeners a los botones (delegación ligera)
+    tabla.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', (e) => editarIntegrante(e.currentTarget.dataset.id)));
+    tabla.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', (e) => deleteIntegrante(e.currentTarget.dataset.id)));
+}
+
+async function loadIntegrantes() {
+    try {
+        escucharMiembrosEnTiempoReal(renderIntegrantes);
+    } catch (error) {
+        console.error('❌ Error cargando integrantes:', error);
+    }
 }
 
 /**
- * Editar un integrante
+ * Editar un integrante - Modal/Formulario
  * @param {string} integranteId - ID del integrante
  */
-function editIntegrante(integranteId) {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('integrantes').doc(integranteId).update({...})
-    
-    console.log('editIntegrante() listo para Firebase:', integranteId);
+async function editarIntegrante(integranteId) {
+    try {
+        const integrante = await obtenerMiembroPorId(integranteId);
+        document.getElementById('nombreIntegrante').value = integrante.nombre || '';
+        document.getElementById('rolIntegrante').value = integrante.rol || '';
+        document.getElementById('fotoIntegrante').value = integrante.foto || '';
+
+        const form = document.getElementById('formIntegrante');
+        form.dataset.editingId = integranteId;
+        const submitBtn = form.querySelector('button[type="submit"]');
+        if (submitBtn) submitBtn.textContent = 'Actualizar';
+
+        const cancelBtn = document.getElementById('btnCancelar');
+        if (cancelBtn) cancelBtn.style.display = 'block';
+
+        form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        showNotification('Formulario listo para editar', 'info');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al cargar integrante: ${error.message}`, 'error');
+    }
 }
 
 /**
  * Eliminar un integrante
  * @param {string} integranteId - ID del integrante
  */
-function deleteIntegrante(integranteId) {
-    if (confirm('¿Estás seguro de que quieres eliminar este integrante?')) {
-        // PLACEHOLDER: Lógica real con Firebase
-        // db.collection('integrantes').doc(integranteId).delete()
-        //     .then(() => {
-        //         console.log('Integrante eliminado');
-        //         loadIntegrantes(); // Recargar tabla
-        //     })
-        //     .catch(error => console.error('Error:', error));
-
-        console.log('deleteIntegrante() listo para Firebase:', integranteId);
+async function deleteIntegrante(integranteId) {
+    if (!confirm('¿Estás seguro de que quieres eliminar este integrante?')) {
+        return;
+    }
+    
+    try {
+        await eliminarMiembro(integranteId);
+        showNotification('Integrante eliminado', 'success');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al eliminar integrante: ${error.message}`, 'error');
     }
 }
 
@@ -97,77 +149,151 @@ function deleteIntegrante(integranteId) {
  * Agregar una nueva presentación
  * @param {string} fecha - Fecha de la presentación (YYYY-MM-DD)
  * @param {string} lugar - Lugar del evento
- * @param {string} ciudad - Ciudad
+ * @param {string} hora - Hora del evento
+ * @param {string} precio - Precio de entrada
  */
-function addPresentacion(fecha, lugar, ciudad) {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('presentaciones').add({
-    //     fecha: firebase.firestore.Timestamp.fromDate(new Date(fecha)),
-    //     lugar: lugar,
-    //     ciudad: ciudad,
-    //     createdAt: new Date()
-    // })
-    // .then(docRef => {
-    //     console.log('Presentación agregada con ID:', docRef.id);
-    //     loadPresentaciones();
-    //     resetForm('formPresentacion');
-    // })
-    // .catch(error => console.error('Error:', error));
+async function addPresentacion(fecha, lugar, hora = '', precio = '') {
+    if (!fecha || !lugar) {
+        showNotification('Por favor completa fecha y lugar', 'error');
+        return;
+    }
 
-    console.log('addPresentacion() listo para Firebase:', { fecha, lugar, ciudad });
+    try {
+        const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
+        const db = getFirestore();
+        
+        await addDoc(collection(db, 'presentaciones'), {
+            fecha: new Date(fecha),
+            lugar: lugar.trim(),
+            hora: hora.trim() || '',
+            precio: precio ? parseFloat(precio) : 0,
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+        
+        console.log('✅ Presentación agregada exitosamente');
+        showNotification('Presentación agregada exitosamente', 'success');
+        loadPresentaciones();
+        resetForm('formPresentacion');
+    } catch (error) {
+        console.error('❌ Error al agregar presentación:', error);
+        showNotification(`Error al agregar presentación: ${error.message}`, 'error');
+    }
 }
 
 /**
- * Obtener todas las presentaciones
+ * Obtener todas las presentaciones en tiempo real
  */
-function loadPresentaciones() {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('presentaciones')
-    //     .orderBy('fecha', 'asc')
-    //     .onSnapshot(snapshot => {
-    //         const tablaPresentaciones = document.getElementById('tablaPresentaciones');
-    //         tablaPresentaciones.innerHTML = '';
-    //         
-    //         snapshot.forEach(doc => {
-    //             const presentacion = doc.data();
-    //             const fecha = presentacion.fecha.toDate().toLocaleDateString();
-    //             const row = `
-    //                 <tr>
-    //                     <td>${fecha}</td>
-    //                     <td>${presentacion.lugar}</td>
-    //                     <td>${presentacion.ciudad}</td>
-    //                     <td>
-    //                         <button onclick="editPresentacion('${doc.id}')" class="btn-action">Editar</button>
-    //                         <button onclick="deletePresentacion('${doc.id}')" class="btn-action delete">Eliminar</button>
-    //                     </td>
-    //                 </tr>
-    //             `;
-    //             tablaPresentaciones.innerHTML += row;
-    //         });
-    //     });
-
-    console.log('loadPresentaciones() listo para Firebase');
+async function loadPresentaciones() {
+    try {
+        const { getFirestore, collection, onSnapshot, query, orderBy } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
+        const db = getFirestore();
+        const tablaPresentaciones = document.getElementById('tablaPresentaciones');
+        
+        if (!tablaPresentaciones) {
+            console.warn('Tabla de presentaciones no encontrada');
+            return;
+        }
+        
+        const q = query(collection(db, 'presentaciones'), orderBy('fecha', 'asc'));
+        
+        onSnapshot(q, (snapshot) => {
+            tablaPresentaciones.innerHTML = '';
+            
+            if (snapshot.empty) {
+                tablaPresentaciones.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;">No hay presentaciones aún</td></tr>';
+                return;
+            }
+            
+            snapshot.forEach(doc => {
+                const presentacion = doc.data();
+                const id = doc.id;
+                const fechaObj = presentacion.fecha instanceof Date ? presentacion.fecha : new Date(presentacion.fecha);
+                const fecha = fechaObj.toLocaleDateString();
+                
+                const row = `
+                    <tr>
+                        <td>${fecha}</td>
+                        <td>${presentacion.hora || '-'}</td>
+                        <td>${presentacion.lugar}</td>
+                        <td>${presentacion.precio ? '$' + presentacion.precio : '-'}</td>
+                        <td>
+                            <button onclick="editarPresentacion('${id}')" class="btn-action">✏️ Editar</button>
+                            <button onclick="deletePresentacion('${id}')" class="btn-action delete">🗑️ Eliminar</button>
+                        </td>
+                    </tr>
+                `;
+                
+                tablaPresentaciones.innerHTML += row;
+            });
+        });
+    } catch (error) {
+        console.error('❌ Error cargando presentaciones:', error);
+    }
 }
 
 /**
  * Editar una presentación
  * @param {string} presentacionId - ID de la presentación
  */
-function editPresentacion(presentacionId) {
-    // PLACEHOLDER: Lógica real con Firebase
-    console.log('editPresentacion() listo para Firebase:', presentacionId);
+async function editarPresentacion(presentacionId) {
+    try {
+        const { getFirestore, collection, doc, getDoc } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
+        const db = getFirestore();
+        
+        const docRef = doc(db, 'presentaciones', presentacionId);
+        const docSnap = await getDoc(docRef);
+        
+        if (!docSnap.exists()) {
+            showNotification('Presentación no encontrada', 'error');
+            return;
+        }
+        
+        const presentacion = docSnap.data();
+        const fechaObj = presentacion.fecha instanceof Date ? presentacion.fecha : new Date(presentacion.fecha);
+        const fechaStr = fechaObj.toISOString().split('T')[0];
+        
+        document.getElementById('fechaPresentacion').value = fechaStr;
+        document.getElementById('lugar').value = presentacion.lugar || '';
+        document.getElementById('horaPresentacion').value = presentacion.hora || '';
+        document.getElementById('precio').value = presentacion.precio || '';
+        
+        const form = document.getElementById('formPresentacion');
+        form.dataset.editingId = presentacionId;
+        form.querySelector('button[type="submit"]').textContent = 'Actualizar';
+        
+        const cancelBtn = document.getElementById('btnCancelarPres');
+        if (cancelBtn) cancelBtn.style.display = 'block';
+        
+        form.scrollIntoView({ behavior: 'smooth' });
+        showNotification('Formulario cargado para editar', 'info');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al cargar presentación: ${error.message}`, 'error');
+    }
 }
 
 /**
  * Eliminar una presentación
  * @param {string} presentacionId - ID de la presentación
  */
-function deletePresentacion(presentacionId) {
-    if (confirm('¿Estás seguro de que quieres eliminar esta presentación?')) {
-        // PLACEHOLDER: Lógica real con Firebase
-        // db.collection('presentaciones').doc(presentacionId).delete()
-
-        console.log('deletePresentacion() listo para Firebase:', presentacionId);
+async function deletePresentacion(presentacionId) {
+    if (!confirm('¿Estás seguro de que quieres eliminar esta presentación?')) {
+        return;
+    }
+    
+    try {
+        const { getFirestore, doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
+        const db = getFirestore();
+        
+        await deleteDoc(doc(db, 'presentaciones', presentacionId));
+        
+        console.log('✅ Presentación eliminada');
+        showNotification('Presentación eliminada exitosamente', 'success');
+        loadPresentaciones();
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al eliminar presentación: ${error.message}`, 'error');
     }
 }
 
@@ -180,22 +306,33 @@ function deletePresentacion(presentacionId) {
  * @param {string} anio - Año de lanzamiento
  * @param {string} imagen - URL de la portada
  */
-function addDisco(titulo, anio, imagen = '') {
-    // PLACEHOLDER: Lógica real con Firebase
-    // db.collection('discografia').add({
-    //     titulo: titulo,
-    //     anio: parseInt(anio),
-    //     imagen: imagen,
-    //     createdAt: new Date()
-    // })
-    // .then(docRef => {
-    //     console.log('Disco agregado con ID:', docRef.id);
-    //     loadDiscos();
-    //     resetForm('formDisco');
-    // })
-    // .catch(error => console.error('Error:', error));
+async function addDisco(titulo, anio, formato = '', cover = '') {
+    if (!titulo || !anio) {
+        showNotification('Por favor completa nombre y año', 'error');
+        return;
+    }
 
-    console.log('addDisco() listo para Firebase:', { titulo, anio, imagen });
+    try {
+        const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
+        const db = getFirestore();
+        
+        await addDoc(collection(db, 'discografia'), {
+            titulo: titulo.trim(),
+            anio: parseInt(anio),
+            formato: formato.trim() || '',
+            cover: cover.trim() || '',
+            createdAt: serverTimestamp(),
+            updatedAt: serverTimestamp()
+        });
+        
+        console.log('✅ Disco agregado exitosamente');
+        showNotification('Disco agregado exitosamente', 'success');
+        loadDiscos();
+        resetForm('formDisco');
+    } catch (error) {
+        console.error('❌ Error al agregar disco:', error);
+        showNotification(`Error al agregar disco: ${error.message}`, 'error');
+    }
 }
 
 /**
@@ -254,6 +391,24 @@ function deleteDisco(discoId) {
 // ===========
 
 /**
+ * Actualizar un integrante existente
+ * @param {string} integranteId - ID del integrante
+ * @param {string} nombre - Nuevo nombre
+ * @param {string} rol - Nuevo rol
+ * @param {string} foto - Nueva foto URL
+ */
+async function actualizarIntegranteForm(integranteId, nombre, rol, foto) {
+    try {
+        await actualizarMiembro(integranteId, { nombre: nombre.trim(), rol: rol.trim(), foto: foto.trim() });
+        showNotification('Integrante actualizado exitosamente', 'success');
+        resetForm('formIntegrante');
+    } catch (error) {
+        console.error('❌ Error:', error);
+        showNotification(`Error al actualizar integrante: ${error.message}`, 'error');
+    }
+}
+
+/**
  * Resetear un formulario
  * @param {string} formId - ID del formulario
  */
@@ -261,7 +416,26 @@ function resetForm(formId) {
     const form = document.getElementById(formId);
     if (form) {
         form.reset();
+        delete form.dataset.editingId;
+        if (formId === 'formIntegrante') {
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) btn.textContent = 'Agregar';
+            
+            // Ocultar botón cancelar
+            const cancelBtn = document.getElementById('btnCancelar');
+            if (cancelBtn) {
+                cancelBtn.style.display = 'none';
+            }
+        }
     }
+}
+
+/**
+ * Cancelar edición
+ */
+function cancelarEdicion() {
+    resetForm('formIntegrante');
+    showNotification('Edición cancelada', 'info');
 }
 
 /**
@@ -306,15 +480,9 @@ function setupFormListeners() {
     // Formulario Integrante
     const formIntegrante = document.getElementById('formIntegrante');
     if (formIntegrante) {
-        formIntegrante.addEventListener('submit', (e) => {
+        formIntegrante.addEventListener('submit', async (e) => {
             e.preventDefault();
-            const nombre = document.getElementById('nombreIntegrante').value;
-            const rol = document.getElementById('rolIntegrante').value;
-            const foto = document.getElementById('fotoIntegrante').value;
-            
-            if (nombre && rol) {
-                addIntegrante(nombre, rol, foto);
-            }
+            await addIntegrante();
         });
     }
     

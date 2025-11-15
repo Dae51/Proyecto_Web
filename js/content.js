@@ -1,5 +1,4 @@
 
-
 document.addEventListener('DOMContentLoaded', function () {
     const links = document.querySelectorAll('.nav-admin .btn-link');
     const sections = document.querySelectorAll('main .section');
