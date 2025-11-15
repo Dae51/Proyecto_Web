@@ -51,7 +51,7 @@ async function addIntegrante() {
 
         resetForm('formIntegrante');
     } catch (error) {
-        console.error('❌ Error al guardar integrante:', error);
+        console.error(' Error al guardar integrante:', error);
         showNotification(`Error: ${error.message}`, 'error');
     }
 }
@@ -79,8 +79,8 @@ function renderIntegrantes(miembros) {
                 <td>${m.rol}</td>
                 <td><img src="${m.foto}" alt="${m.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;"></td>
                 <td>
-                    <button data-id="${m.id}" class="btn-action btn-edit">✏️ Editar</button>
-                    <button data-id="${m.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+                    <button data-id="${m.id}" class="btn-action btn-edit"> Editar</button>
+                    <button data-id="${m.id}" class="btn-action delete btn-delete"> Eliminar</button>
                 </td>
             </tr>`;
     }).join('');
@@ -95,7 +95,7 @@ async function loadIntegrantes() {
     try {
         escucharMiembrosEnTiempoReal(renderIntegrantes);
     } catch (error) {
-        console.error('❌ Error cargando integrantes:', error);
+        console.error(' Error cargando integrantes:', error);
     }
 }
 
@@ -119,7 +119,7 @@ async function editarIntegrante(integranteId) {
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
         showNotification('Formulario listo para editar', 'info');
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error(' Error:', error);
         showNotification(`Error al cargar integrante: ${error.message}`, 'error');
     }
 }
@@ -135,7 +135,7 @@ async function deleteIntegrante(integranteId) {
         await eliminarMiembro(integranteId);
         showNotification('Integrante eliminado', 'success');
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error(' Error:', error);
         showNotification(`Error al eliminar integrante: ${error.message}`, 'error');
     }
 }
@@ -193,7 +193,7 @@ async function addPresentacion() {
 
     resetForm('formPresentacion');
   } catch (error) {
-    console.error('❌ Error al guardar presentación:', error);
+    console.error(' Error al guardar presentación:', error);
     showNotification(`Error: ${error.message}`, 'error');
   }
 }
@@ -241,8 +241,8 @@ function renderPresentaciones(presentaciones) {
         <td>${p.hora || '-'}</td>
         <td>${p.precio ? '$' + p.precio : '-'}</td>
         <td>
-          <button data-id="${p.id}" class="btn-action btn-edit">✏️ Editar</button>
-          <button data-id="${p.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+          <button data-id="${p.id}" class="btn-action btn-edit"> Editar</button>
+          <button data-id="${p.id}" class="btn-action delete btn-delete"> Eliminar</button>
         </td>
       </tr>`;
   }).join('');
@@ -257,7 +257,7 @@ function loadPresentaciones() {
   try {
     escucharPresentacionesEnTiempoReal(renderPresentaciones);
   } catch (error) {
-    console.error('❌ Error cargando presentaciones:', error);
+    console.error(' Error cargando presentaciones:', error);
   }
 }
 
@@ -304,7 +304,7 @@ async function editarPresentacion(presentacionId) {
     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     showNotification('Formulario listo para editar', 'info');
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error(' Error:', error);
     showNotification(`Error al cargar presentación: ${error.message}`, 'error');
   }
 }
@@ -319,7 +319,7 @@ async function deletePresentacion(presentacionId) {
     await eliminarPresentacion(presentacionId);
     showNotification('Presentación eliminada exitosamente', 'success');
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error(' Error:', error);
     showNotification(`Error al eliminar presentación: ${error.message}`, 'error');
   }
 }
@@ -373,7 +373,7 @@ async function addDisco() {
 
     resetForm('formDisco');
   } catch (error) {
-    console.error('❌ Error al guardar disco:', error);
+    console.error(' Error al guardar disco:', error);
     showNotification(`Error: ${error.message}`, 'error');
   }
 }
@@ -396,8 +396,8 @@ function renderDiscos(discos) {
         <td>${d.formato || '-'}</td>
         <td><img src="${d.cover}" alt="${d.nombre}" style="width:50px;height:50px;object-fit:cover;border-radius:4px;"></img></td>
         <td>
-          <button data-id="${d.id}" class="btn-action btn-edit">✏️ Editar</button>
-          <button data-id="${d.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+          <button data-id="${d.id}" class="btn-action btn-edit"> Editar</button>
+          <button data-id="${d.id}" class="btn-action delete btn-delete"> Eliminar</button>
         </td>
       </tr>`;
   }).join('');
@@ -412,7 +412,7 @@ function loadDiscos() {
   try {
     escucharDiscosEnTiempoReal(renderDiscos);
   } catch (error) {
-    console.error('❌ Error cargando discos:', error);
+    console.error(' Error cargando discos:', error);
   }
 }
 
@@ -441,7 +441,7 @@ async function editarDisco(discoId) {
     form.scrollIntoView({ behavior: 'smooth', block: 'start' });
     showNotification('Formulario listo para editar', 'info');
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error(' Error:', error);
     showNotification(`Error al cargar disco: ${error.message}`, 'error');
   }
 }
@@ -456,7 +456,7 @@ async function deleteDisco(discoId) {
     await eliminarDisco(discoId);
     showNotification('Disco eliminado', 'success');
   } catch (error) {
-    console.error('❌ Error:', error);
+    console.error(' Error:', error);
     showNotification(`Error al eliminar disco: ${error.message}`, 'error');
   }
 }
@@ -629,7 +629,7 @@ async function addNoticia() {
 
         resetForm('formNoticias');
     } catch (error) {
-        console.error('❌ Error al guardar noticia:', error);
+        console.error(' Error al guardar noticia:', error);
         showNotification(`Error: ${error.message}`, 'error');
     }
 }
@@ -696,7 +696,7 @@ async function loadNoticias() {
     try {
         escucharNoticiasEnTiempoReal(renderNoticias);
     } catch (error) {
-        console.error('❌ Error cargando noticias:', error);
+        console.error(' Error cargando noticias:', error);
     }
 }
 
@@ -742,7 +742,7 @@ async function editarNoticia(noticiaId) {
         form.scrollIntoView({ behavior: 'smooth', block: 'start' });
         showNotification('Formulario listo para editar', 'info');
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error(' Error:', error);
         showNotification(`Error al cargar noticia: ${error.message}`, 'error');
     }
 }
@@ -757,7 +757,7 @@ async function deleteNoticia(noticiaId) {
         await eliminarNoticia(noticiaId);
         showNotification('Noticia eliminada', 'success');
     } catch (error) {
-        console.error('❌ Error:', error);
+        console.error(' Error:', error);
         showNotification(`Error al eliminar noticia: ${error.message}`, 'error');
     }
 }

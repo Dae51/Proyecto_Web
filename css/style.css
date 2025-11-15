@@ -11,6 +11,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* NAVBAR MODERNO Y RESPONSIVO */
@@ -102,6 +103,7 @@ header {
     transition: all 0.3s ease;
     display: block;
     white-space: nowrap;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .nav-link:hover {
@@ -199,6 +201,7 @@ header {
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 @media screen and (max-width: 480px) {
@@ -219,36 +222,34 @@ header {
 
 .titulo-noticias {
     text-align: center;
-    padding-top: 40px;
-    padding-bottom: 20px;
-   background-color:rgb(52, 10, 69);
+    padding: 40px 20px;
+    background-color: #5a2670;
+    order: -1;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .titulo-noticias h1 {
-    font-size: 28px;
-    color: #c7bf27;
+    font-size: 36px;
+    color: var(--amarillo);
     text-align: center;
-    margin-bottom: 10px;
-    font-family: 'Didact Gothic', sans-serif;
-    font-weight: 400;
-    font-style: normal;
-    font-size: 20px;
+    margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
     font-weight: bold;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 .seccion-noticias {
     display: flex; 
     flex-wrap: wrap; 
-    justify-content: center; 
+    justify-content: center;
+    gap: 20px;
     padding: 40px 20px;
     background-image: url(../img/queen-landing.jpg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    height: 100vh; 
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    min-height: auto;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .noticia-link {
@@ -257,7 +258,8 @@ header {
     display: block; 
     width: 32.33%; 
     margin: 0.5%; 
-    margin-bottom: 30px; 
+    margin-bottom: 30px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .noticia-card {
@@ -271,6 +273,7 @@ header {
     background-size: cover;
     background-position: center; 
     background-repeat: no-repeat;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .noticia-card:hover {
@@ -296,18 +299,21 @@ header {
     left: 0;
     right: 0;
     padding: 15px;
-    background: var(--negro); 
+    background: var(--negro);
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .texto-carta h3 {
     color: #fff; 
     font-size: 1.2em;
     margin: 0;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 a{
     text-decoration: none;
     color: #333;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 footer{
@@ -324,6 +330,7 @@ footer{
     justify-content: center;
     align-items: center;
     height: 60px; /* Altura fija para centrado vertical */
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 /* Responsive para móviles - COLUMNA */
@@ -351,6 +358,7 @@ footer{
         font-size: 20px;
         padding: 10px;
         margin-top: 60px;
+        font-family: Arial, Helvetica, sans-serif;
     }
 }
 
@@ -362,7 +370,7 @@ footer{
     background-color:rgb(52, 10, 69);;
     padding: 40px 20px;
     margin-bottom: 0px;
-    
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .contenedor-noticia {
@@ -373,12 +381,13 @@ footer{
     max-width: 1200px;
     margin: 0 auto;
     border: 5px solid gold;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .noticias-abiertas h2{
     text-align: center;
     padding: 20px 0;
-    font-family: Arial, sans-serif;
+    font-family: Arial, Helvetica, sans-serif;
     color: var(--negro);
 }
 
@@ -388,6 +397,7 @@ footer{
     padding: 0;
     color: var(--negro);
     line-height: 1.6;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .noticias-abiertas img{
@@ -464,6 +474,7 @@ iframe{
 
 .calendar-container h1  {
     padding: 15px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
 .calendar-container  section {
@@ -471,4 +482,5 @@ iframe{
     flex-direction: column;
     align-items: center;
     margin: 20px 0 20px 0;
+    font-family: Arial, Helvetica, sans-serif;
 }

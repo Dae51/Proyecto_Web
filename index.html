@@ -6,7 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Queen</title>
     <link rel="stylesheet" href="./css/style.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Archivo+Black&display=swap');
+    </style>
 </head>
+
 <body>
     <script src="./js/navbar.js"></script>
     <header>
@@ -14,7 +18,7 @@
             <div class="navbar-brand">
                 <img src="./img/logo_queen.png" alt="Logo Queen" class="logo">
             </div>
-            
+
             <button class="hamburger" id="hamburger">
                 <span></span>
                 <span></span>
@@ -24,7 +28,6 @@
             <nav class="navbar-menu" id="navbarMenu">
                 <ul class="nav-list">
                     <li class="nav-item"><a href="./index.html" class="nav-link">Inicio</a></li>
-                    <li class="nav-item"><a href="./noticias.html" class="nav-link">Noticias</a></li>
                     <li class="nav-item"><a href="./Integrantes.html" class="nav-link">Integrantes</a></li>
                     <li class="nav-item"><a href="./presentaciones.html" class="nav-link">Calendario</a></li>
                     <li class="nav-item"><a href="./Discografia.html" class="nav-link">Discografía</a></li>
@@ -35,11 +38,42 @@
             </nav>
         </div>
     </header>
- <div class="pantalla-principal"> <!-- Aqui esta esto para ponerle fondo de pantalla  -->
- </div> 
+
+    <div class="titulo-noticias">
+        <h1>Noticias</h1>
+    </div>
+    <section class="seccion-noticias">
+        <a href="./noticia1.html" class="noticia-link">
+            <article class="noticia-card" id="noticia1">
+                <div class="texto-carta">
+                    <h3>50 Aniversario de Bohemian Rhapsody</h3>
+                </div>
+            </article>
+        </a>
+
+        <a href="./noticia2.html" class="noticia-link">
+            <article class="noticia-card" id="noticia2">
+                <div class="texto-carta">
+                    <h3>Brian May se une a Benson Boone en Coachella tras recuperarse
+                        de un pequeño derrame cerebral</h3>
+                </div>
+            </article>
+        </a>
+
+        <a href="./noticia3.html" class="noticia-link">
+            <article class="noticia-card" id="noticia3">
+                <div class="texto-carta">
+                    <h3>Brian May sugiere que podrían surgir canciones
+                        nuevas de Queen</h3>
+                </div>
+            </article>
+        </a>
+    </section>
+    </div>
 </body>
 
 <footer>
     Derechos Reservados 2025
 </footer>
+
 </html>

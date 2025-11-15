@@ -1,6 +1,6 @@
 body {
   font-family: Arial, sans-serif;
-  background-color: #f5f5f5;
+  background-color: black;
   margin: 0;
   padding: 0;
   color: #222;
@@ -13,7 +13,7 @@ body {
 
 header {
   background-color: #000;
-  color: #fff;
+  color: #F4D03F;
   padding: 1rem;
   text-align: center;
 }
@@ -160,7 +160,7 @@ header {
 
 .title-discografia {
     text-align: center;
-    color: white;
+    color: #F4D03F;
     margin-top: 20px;
 
 }
