@@ -1,28 +1,23 @@
-/* ======================== FIREBASE ADMIN CRUD ======================== */
-// Este archivo maneja todas las operaciones de CRUD en el admin panel
+
 // Importar funciones de integrantes.js
-import { crearMiembro, obtenerTodosMiembros, escucharMiembrosEnTiempoReal, obtenerMiembroPorId, actualizarMiembro, eliminarMiembro } from './integrantes.js';
+import { crearMiembro, escucharMiembrosEnTiempoReal, obtenerMiembroPorId, actualizarMiembro, eliminarMiembro } from './integrantes.js';
 // Importar funciones de discografia.js
-import { crearDisco, obtenerTodosDiscos, escucharDiscosEnTiempoReal, obtenerDiscoPorId, actualizarDisco, eliminarDisco } from './discografia.js';
+import { crearDisco, escucharDiscosEnTiempoReal, obtenerDiscoPorId, actualizarDisco, eliminarDisco } from './discografia.js';
+// Importar funciones de presentaciones.js
+import { crearPresentacion, escucharPresentacionesEnTiempoReal, obtenerPresentacionPorId, actualizarPresentacion, eliminarPresentacion } from './presentaciones.js';
+// Importar funciones de noticias.js
+import { crearNoticia, escucharNoticiasEnTiempoReal, obtenerNoticiaPorId, actualizarNoticia, eliminarNoticia } from './service/noticias.js';
+
+
 // Importar validaciones
 import { Validation } from './service/validator.js';
-
-// Importar funciones de noticias.js
-import { crearNoticia, obtenerTodasNoticias, escucharNoticiasEnTiempoReal, obtenerNoticiaPorId, actualizarNoticia, eliminarNoticia } from './service/noticias.js';
-
+// Importar funciones de autenticacion
 import { loginUser, signup, signOutUser } from './service/auth.js';
 import { getAuth, onAuthStateChanged } from 'https://www.gstatic.com/firebasejs/12.5.0/firebase-auth.js';
 
-// CRUD INTEGRANTES - Conectado a Firestore collection "miembros"
-// ================================================================
 
-/**
- * Agregar un nuevo integrante (Firestore)
- * @param {string} nombre - Nombre del integrante
- * @param {string} rol - Rol (vocalista, guitarra, etc.)
- * @param {string} fotoUrl - URL de la foto (opcional)
- */
-// Leer valores del formulario de integrante
+
+// leer valores del formulario de integrante
 function leerFormularioIntegrante() {
     return {
         nombre: (document.getElementById('nombreIntegrante') || {}).value || '',
@@ -62,14 +57,11 @@ async function addIntegrante() {
 }
 
 // Exponer las funciones que se llaman desde el HTML inline
-// Exponer funciones para compatibilidad con llamadas inline en el HTML
 window.addIntegrante = addIntegrante;
 window.editarIntegrante = editarIntegrante;
 window.deleteIntegrante = deleteIntegrante;
 
-/**
- * Obtener todos los integrantes en tiempo real (Firestore)
- */
+// renderizar tabla de integrantes
 function renderIntegrantes(miembros) {
     const tabla = document.getElementById('tablaIntegrantes');
     if (!tabla) return;
@@ -98,6 +90,7 @@ function renderIntegrantes(miembros) {
     tabla.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', (e) => deleteIntegrante(e.currentTarget.dataset.id)));
 }
 
+// Cargar y escuchar integrantes en tiempo real
 async function loadIntegrantes() {
     try {
         escucharMiembrosEnTiempoReal(renderIntegrantes);
@@ -106,10 +99,8 @@ async function loadIntegrantes() {
     }
 }
 
-/**
- * Editar un integrante - Modal/Formulario
- * @param {string} integranteId - ID del integrante
- */
+
+// Editar un integrante
 async function editarIntegrante(integranteId) {
     try {
         const integrante = await obtenerMiembroPorId(integranteId);
@@ -133,10 +124,8 @@ async function editarIntegrante(integranteId) {
     }
 }
 
-/**
- * Eliminar un integrante
- * @param {string} integranteId - ID del integrante
- */
+
+// Eliminar un integrante
 async function deleteIntegrante(integranteId) {
     if (!confirm('¿Estás seguro de que quieres eliminar este integrante?')) {
         return;
@@ -151,173 +140,196 @@ async function deleteIntegrante(integranteId) {
     }
 }
 
-// CRUD PRESENTACIONES
-// ====================
 
-/**
- * Agregar una nueva presentación
- * @param {string} fecha - Fecha de la presentación (YYYY-MM-DD)
- * @param {string} lugar - Lugar del evento
- * @param {string} hora - Hora del evento
- * @param {string} precio - Precio de entrada
- */
-async function addPresentacion(fecha, lugar, hora = '', precio = '') {
-    if (!fecha || !lugar) {
-        showNotification('Por favor completa fecha y lugar', 'error');
-        return;
-    }
 
-    try {
-        const { getFirestore, collection, addDoc, serverTimestamp } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
-        const db = getFirestore();
-        
-        await addDoc(collection(db, 'presentaciones'), {
-            fecha: new Date(fecha),
-            lugar: lugar.trim(),
-            hora: hora.trim() || '',
-            precio: precio ? parseFloat(precio) : 0,
-            createdAt: serverTimestamp(),
-            updatedAt: serverTimestamp()
-        });
-        
-        console.log('✅ Presentación agregada exitosamente');
-        showNotification('Presentación agregada exitosamente', 'success');
-        loadPresentaciones();
-        resetForm('formPresentacion');
-    } catch (error) {
-        console.error('❌ Error al agregar presentación:', error);
-        showNotification(`Error al agregar presentación: ${error.message}`, 'error');
-    }
+ //Leer valores del formulario de presentación
+function leerFormularioPresentacion() {
+  return {
+    lugar: (document.getElementById('lugar') || {}).value || '',
+    fecha: (document.getElementById('fechaPresentacion') || {}).value || '',
+    hora: (document.getElementById('horaPresentacion') || {}).value || '',
+    precio: (document.getElementById('precio') || {}).value || ''
+  };
 }
 
-/**
- * Obtener todas las presentaciones en tiempo real
- */
-async function loadPresentaciones() {
-    try {
-        const { getFirestore, collection, onSnapshot, query, orderBy } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
-        const db = getFirestore();
-        const tablaPresentaciones = document.getElementById('tablaPresentaciones');
-        
-        if (!tablaPresentaciones) {
-            console.warn('Tabla de presentaciones no encontrada');
-            return;
+// Añadir o actualizar presentación según el estado del formulario
+async function addPresentacion() {
+  const form = document.getElementById('formPresentacion');
+  if (!form) return;
+
+  const { lugar, fecha, hora, precio } = leerFormularioPresentacion();
+
+  // Validar usando validator.js
+  const validation = Validation.validatePresentation({ lugar, fecha, hora, precio });
+  if (!validation.ok) {
+    showNotification(validation.errors.join(' '), 'error');
+    return;
+  }
+
+  const editingId = form.dataset.editingId;
+
+  try {
+    // Asegurar que la hora sea una cadena en formato HH:MM o vacía
+    let horaFormato = '';
+    if (hora && /^\d{2}:\d{2}$/.test(hora)) {
+      horaFormato = hora;
+    }
+
+    const presentacionData = {
+      lugar: lugar.trim(),
+      fecha: fecha,  
+      hora: horaFormato, 
+      precio: precio ? parseFloat(precio) : 0
+    };
+
+    if (editingId) {
+      await actualizarPresentacion(editingId, presentacionData);
+      showNotification('Presentación actualizada exitosamente', 'success');
+      delete form.dataset.editingId;
+    } else {
+      await crearPresentacion(presentacionData);
+      showNotification('Presentación agregada exitosamente', 'success');
+    }
+
+    resetForm('formPresentacion');
+  } catch (error) {
+    console.error('❌ Error al guardar presentación:', error);
+    showNotification(`Error: ${error.message}`, 'error');
+  }
+}
+
+// Renderizar tabla de presentaciones
+function renderPresentaciones(presentaciones) {
+  const tabla = document.getElementById('tablaPresentaciones');
+  if (!tabla) return;
+
+  if (!presentaciones || presentaciones.length === 0) {
+    tabla.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;">No hay presentaciones aún</td></tr>';
+    return;
+  }
+
+  tabla.innerHTML = presentaciones.map(p => {
+    let fechaFormato = '';
+    if (p.fecha) {
+      const f = String(p.fecha);
+      if (/^\d{4}-\d{2}-\d{2}/.test(f)) {
+        // Si es string YYYY-MM-DD, parsear y formatear
+        const fechaObj = new Date(f + 'T00:00:00');
+        fechaFormato = fechaObj.toLocaleDateString('es-ES');
+      } else if (p.fecha instanceof Date) {
+        // Si es Date, formatear directamente
+        fechaFormato = p.fecha.toLocaleDateString('es-ES');
+      } else {
+        // Intenta parsear como sea
+        try {
+          const fechaObj = new Date(p.fecha);
+          if (!isNaN(fechaObj.getTime())) {
+            fechaFormato = fechaObj.toLocaleDateString('es-ES');
+          } else {
+            fechaFormato = f;
+          }
+        } catch (e) {
+          fechaFormato = f;
         }
-        
-        const q = query(collection(db, 'presentaciones'), orderBy('fecha', 'asc'));
-        
-        onSnapshot(q, (snapshot) => {
-            tablaPresentaciones.innerHTML = '';
-            
-            if (snapshot.empty) {
-                tablaPresentaciones.innerHTML = '<tr><td colspan="5" style="text-align:center;color:#999;">No hay presentaciones aún</td></tr>';
-                return;
-            }
-            
-            snapshot.forEach(doc => {
-                const presentacion = doc.data();
-                const id = doc.id;
-                const fechaObj = presentacion.fecha instanceof Date ? presentacion.fecha : new Date(presentacion.fecha);
-                const fecha = fechaObj.toLocaleDateString();
-                
-                const row = `
-                    <tr>
-                        <td>${fecha}</td>
-                        <td>${presentacion.hora || '-'}</td>
-                        <td>${presentacion.lugar}</td>
-                        <td>${presentacion.precio ? '$' + presentacion.precio : '-'}</td>
-                        <td>
-                            <button onclick="editarPresentacion('${id}')" class="btn-action">✏️ Editar</button>
-                            <button onclick="deletePresentacion('${id}')" class="btn-action delete">🗑️ Eliminar</button>
-                        </td>
-                    </tr>
-                `;
-                
-                tablaPresentaciones.innerHTML += row;
-            });
-        });
-    } catch (error) {
-        console.error('❌ Error cargando presentaciones:', error);
-    }
-}
-
-/**
- * Editar una presentación
- * @param {string} presentacionId - ID de la presentación
- */
-async function editarPresentacion(presentacionId) {
-    try {
-        const { getFirestore, collection, doc, getDoc } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
-        const db = getFirestore();
-        
-        const docRef = doc(db, 'presentaciones', presentacionId);
-        const docSnap = await getDoc(docRef);
-        
-        if (!docSnap.exists()) {
-            showNotification('Presentación no encontrada', 'error');
-            return;
-        }
-        
-        const presentacion = docSnap.data();
-        const fechaObj = presentacion.fecha instanceof Date ? presentacion.fecha : new Date(presentacion.fecha);
-        const fechaStr = fechaObj.toISOString().split('T')[0];
-        
-        document.getElementById('fechaPresentacion').value = fechaStr;
-        document.getElementById('lugar').value = presentacion.lugar || '';
-        document.getElementById('horaPresentacion').value = presentacion.hora || '';
-        document.getElementById('precio').value = presentacion.precio || '';
-        
-        const form = document.getElementById('formPresentacion');
-        form.dataset.editingId = presentacionId;
-        form.querySelector('button[type="submit"]').textContent = 'Actualizar';
-        
-        const cancelBtn = document.getElementById('btnCancelarPres');
-        if (cancelBtn) cancelBtn.style.display = 'block';
-        
-        form.scrollIntoView({ behavior: 'smooth' });
-        showNotification('Formulario cargado para editar', 'info');
-    } catch (error) {
-        console.error('❌ Error:', error);
-        showNotification(`Error al cargar presentación: ${error.message}`, 'error');
-    }
-}
-
-/**
- * Eliminar una presentación
- * @param {string} presentacionId - ID de la presentación
- */
-async function deletePresentacion(presentacionId) {
-    if (!confirm('¿Estás seguro de que quieres eliminar esta presentación?')) {
-        return;
+      }
     }
     
-    try {
-        const { getFirestore, doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/12.5.0/firebase-firestore.js');
-        const db = getFirestore();
-        
-        await deleteDoc(doc(db, 'presentaciones', presentacionId));
-        
-        console.log('✅ Presentación eliminada');
-        showNotification('Presentación eliminada exitosamente', 'success');
-        loadPresentaciones();
-    } catch (error) {
-        console.error('❌ Error:', error);
-        showNotification(`Error al eliminar presentación: ${error.message}`, 'error');
-    }
+    return `
+      <tr>
+        <td>${p.lugar}</td>
+        <td>${fechaFormato}</td>
+        <td>${p.hora || '-'}</td>
+        <td>${p.precio ? '$' + p.precio : '-'}</td>
+        <td>
+          <button data-id="${p.id}" class="btn-action btn-edit">✏️ Editar</button>
+          <button data-id="${p.id}" class="btn-action delete btn-delete">🗑️ Eliminar</button>
+        </td>
+      </tr>`;
+  }).join('');
+
+  // Añadir listeners a botones
+  tabla.querySelectorAll('.btn-edit').forEach(b => b.addEventListener('click', (e) => editarPresentacion(e.currentTarget.dataset.id)));
+  tabla.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', (e) => deletePresentacion(e.currentTarget.dataset.id)));
 }
 
-// CRUD DISCOGRAFÍA
-// =================
+// Cargar y escuchar presentaciones en tiempo real
+function loadPresentaciones() {
+  try {
+    escucharPresentacionesEnTiempoReal(renderPresentaciones);
+  } catch (error) {
+    console.error('❌ Error cargando presentaciones:', error);
+  }
+}
 
-/**
- * Agregar un nuevo disco
- * @param {string} titulo - Título del disco
- * @param {string} anio - Año de lanzamiento
- * @param {string} imagen - URL de la portada
- */
-/**
- * Leer valores del formulario de disco
- */
+// Editar una presentación
+async function editarPresentacion(presentacionId) {
+  try {
+    const presentacion = await obtenerPresentacionPorId(presentacionId);
+    if (!presentacion) {
+      showNotification('Presentación no encontrada', 'error');
+      return;
+    }
+
+    document.getElementById('lugar').value = presentacion.lugar || '';
+    
+    let fechaStr = '';
+    if (presentacion.fecha) {
+      const f = String(presentacion.fecha);
+      if (/^\d{4}-\d{2}-\d{2}/.test(f)) {
+        fechaStr = f.substring(0, 10);
+      } else if (presentacion.fecha instanceof Date) {
+        fechaStr = presentacion.fecha.toISOString().split('T')[0];
+      }
+    }
+    document.getElementById('fechaPresentacion').value = fechaStr;
+    
+    // Leer hora como string y validar formato
+    let horaValue = '';
+    if (presentacion.hora) {
+      const hora = String(presentacion.hora).trim();
+      // Validar que sea formato HH:MM
+      if (/^\d{2}:\d{2}/.test(hora)) {
+        // Extraer solo HH:MM si tiene más caracteres
+        horaValue = hora.substring(0, 5);
+      }
+    }
+    document.getElementById('horaPresentacion').value = horaValue;
+    document.getElementById('precio').value = presentacion.precio || '';
+
+    const form = document.getElementById('formPresentacion');
+    form.dataset.editingId = presentacionId;
+    const submitBtn = form.querySelector('button[type="button"]');
+    if (submitBtn) submitBtn.textContent = 'Actualizar presentación';
+
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    showNotification('Formulario listo para editar', 'info');
+  } catch (error) {
+    console.error('❌ Error:', error);
+    showNotification(`Error al cargar presentación: ${error.message}`, 'error');
+  }
+}
+
+// Eliminar una presentación
+async function deletePresentacion(presentacionId) {
+  if (!confirm('¿Estás seguro de que quieres eliminar esta presentación?')) {
+    return;
+  }
+
+  try {
+    await eliminarPresentacion(presentacionId);
+    showNotification('Presentación eliminada exitosamente', 'success');
+  } catch (error) {
+    console.error('❌ Error:', error);
+    showNotification(`Error al eliminar presentación: ${error.message}`, 'error');
+  }
+}
+
+// Exponer funciones para compatibilidad con llamadas inline en el HTML
+window.addPresentacion = addPresentacion;
+window.editarPresentacion = editarPresentacion;
+window.deletePresentacion = deletePresentacion;
+
+// leer valores del formulario de disco
 function leerFormularioDisco() {
   return {
     nombre: (document.getElementById('nombreDisco') || {}).value || '',
@@ -327,9 +339,7 @@ function leerFormularioDisco() {
   };
 }
 
-/**
- * Agregar o actualizar disco
- */
+// Añadir o actualizar disco según el estado del formulario
 async function addDisco() {
   const form = document.getElementById('formDisco');
   if (!form) return;
@@ -368,9 +378,7 @@ async function addDisco() {
   }
 }
 
-/**
- * Renderizar tabla de discos
- */
+/// Renderizar tabla de discos
 function renderDiscos(discos) {
   const tabla = document.getElementById('tablaDiscos');
   if (!tabla) return;
@@ -399,9 +407,7 @@ function renderDiscos(discos) {
   tabla.querySelectorAll('.btn-delete').forEach(b => b.addEventListener('click', (e) => deleteDisco(e.currentTarget.dataset.id)));
 }
 
-/**
- * Cargar y escuchar discos en tiempo real
- */
+// Cargar y escuchar discos en tiempo real
 function loadDiscos() {
   try {
     escucharDiscosEnTiempoReal(renderDiscos);
@@ -410,9 +416,7 @@ function loadDiscos() {
   }
 }
 
-/**
- * Editar un disco
- */
+// Editar un disco
 async function editarDisco(discoId) {
   try {
     const disco = await obtenerDiscoPorId(discoId);
@@ -442,9 +446,7 @@ async function editarDisco(discoId) {
   }
 }
 
-/**
- * Eliminar un disco
- */
+// Eliminar un disco
 async function deleteDisco(discoId) {
   if (!confirm('¿Estás seguro de que quieres eliminar este disco?')) {
     return;
@@ -464,31 +466,8 @@ window.addDisco = addDisco;
 window.editarDisco = editarDisco;
 window.deleteDisco = deleteDisco;
 
-// UTILIDADES
-// ===========
 
-/**
- * Actualizar un integrante existente
- * @param {string} integranteId - ID del integrante
- * @param {string} nombre - Nuevo nombre
- * @param {string} rol - Nuevo rol
- * @param {string} foto - Nueva foto URL
- */
-async function actualizarIntegranteForm(integranteId, nombre, rol, foto) {
-    try {
-        await actualizarMiembro(integranteId, { nombre: nombre.trim(), rol: rol.trim(), foto: foto.trim() });
-        showNotification('Integrante actualizado exitosamente', 'success');
-        resetForm('formIntegrante');
-    } catch (error) {
-        console.error('❌ Error:', error);
-        showNotification(`Error al actualizar integrante: ${error.message}`, 'error');
-    }
-}
-
-/**
- * Resetear un formulario
- * @param {string} formId - ID del formulario
- */
+// Resetear formulario
 function resetForm(formId) {
     const form = document.getElementById(formId);
     if (form) {
@@ -504,6 +483,10 @@ function resetForm(formId) {
                 cancelBtn.style.display = 'none';
             }
         }
+        if (formId === 'formPresentacion') {
+            const btn = form.querySelector('button[type="button"]');
+            if (btn) btn.textContent = 'Agregar presentación';
+        }
         if (formId === 'formDisco') {
             const btn = form.querySelector('button[type="submit"]');
             if (btn) btn.textContent = 'Agregar disco';
@@ -513,30 +496,32 @@ function resetForm(formId) {
                 cancelBtn.style.display = 'none';
             }
         }
+        if (formId === 'formNoticias') {
+            const btn = form.querySelector('button[type="submit"]');
+            if (btn) btn.textContent = 'Agregar Noticia';
+            
+            const cancelBtn = document.getElementById('btnCancelarNoticia');
+            if (cancelBtn) {
+                cancelBtn.style.display = 'none';
+            }
+        }
     }
 }
 
-/**
- * Cancelar edición
- */
+
+// Cancelar edición de integrante
 function cancelarEdicion() {
     resetForm('formIntegrante');
     showNotification('Edición cancelada', 'info');
 }
 
-/**
- * Mostrar notificación
- * @param {string} mensaje - Mensaje a mostrar
- * @param {string} tipo - Tipo: 'success', 'error', 'info'
- */
+// Cancelar edición de disco
 function showNotification(mensaje, tipo = 'info') {
     // PLACEHOLDER: Implementar notificaciones visuales
     alert(`[${tipo.toUpperCase()}] ${mensaje}`);
 }
 
-/**
- * Cerrar sesión del usuario (Firebase)
- */
+// Cerrar sesión del usuario
 async function logoutUser() {
     try {
         await signOutUser();
@@ -551,13 +536,7 @@ async function logoutUser() {
     }
 }
 
-// INICIALIZACIÓN
-// ===============
-
-/**
- * Inicializar el panel de admin
- * Se ejecuta cuando el usuario está autenticado
- */
+// Inicializar panel de administración
 function initializeAdminPanel(user) {
     console.log('Inicializando panel de admin para usuario:', user.email);
     
@@ -572,14 +551,14 @@ function initializeAdminPanel(user) {
     loadPresentaciones();
     loadDiscos();
     loadNoticias();
+
     
     // Event listeners para formularios
     setupFormListeners();
 }
 
-/**
- * Configurar event listeners para los formularios
- */
+
+// Configurar listeners para formularios y botones
 function setupFormListeners() {
     // Formulario Integrante
     const formIntegrante = document.getElementById('formIntegrante');
@@ -587,21 +566,6 @@ function setupFormListeners() {
         formIntegrante.addEventListener('submit', async (e) => {
             e.preventDefault();
             await addIntegrante();
-        });
-    }
-    
-    // Formulario Presentación
-    const formPresentacion = document.getElementById('formPresentacion');
-    if (formPresentacion) {
-        formPresentacion.addEventListener('submit', (e) => {
-            e.preventDefault();
-            const fecha = document.getElementById('fechaPresentacion').value;
-            const lugar = document.getElementById('lugarPresentacion').value;
-            const ciudad = document.getElementById('ciudadPresentacion').value;
-            
-            if (fecha && lugar && ciudad) {
-                addPresentacion(fecha, lugar, ciudad);
-            }
         });
     }
     
@@ -619,23 +583,10 @@ function setupFormListeners() {
     if (logoutBtn) {
         logoutBtn.addEventListener('click', logoutUser);
     }
-
-    // Formulario Noticias
-const formNoticias = document.getElementById("formNoticias");
-if (formNoticias) {
-    formNoticias.addEventListener("submit", (e) => {
-        e.preventDefault();
-        addNoticia();
-    });
-}
 }
 
-// CRUD NOTICIAS
-// ==============
 
-/**
- * Leer valores del formulario de noticia
- */
+// leer valores del formulario de noticia
 function leerFormularioNoticia() {
     return {
         titulo: (document.getElementById('tituloNoticia') || {}).value || '',
@@ -645,9 +596,7 @@ function leerFormularioNoticia() {
     };
 }
 
-/**
- * Añadir o actualizar noticia según el estado del formulario
- */
+// Añadir o actualizar noticia según el estado del formulario
 async function addNoticia() {
     const form = document.getElementById('formNoticias');
     if (!form) return;
@@ -662,21 +611,19 @@ async function addNoticia() {
     const editingId = form.dataset.editingId;
 
     try {
+        const noticiaData = {
+            titulo: titulo.trim(), 
+            descripcion: descripcion.trim(), 
+            autor: autor.trim(), 
+            fecha: fecha // Pasar como string YYYY-MM-DD, será procesado en noticias.js
+        };
+
         if (editingId) {
-            await actualizarNoticia(editingId, { 
-                titulo: titulo.trim(), 
-                descripcion: descripcion.trim(), 
-                autor: autor.trim(), 
-                fecha: new Date(fecha) 
-            });
+            await actualizarNoticia(editingId, noticiaData);
             showNotification('Noticia actualizada exitosamente', 'success');
+            delete form.dataset.editingId;
         } else {
-            await crearNoticia({ 
-                titulo: titulo.trim(), 
-                descripcion: descripcion.trim(), 
-                autor: autor.trim(), 
-                fecha: new Date(fecha) 
-            });
+            await crearNoticia(noticiaData);
             showNotification('Noticia agregada exitosamente', 'success');
         }
 
@@ -692,9 +639,7 @@ window.addNoticia = addNoticia;
 window.editarNoticia = editarNoticia;
 window.deleteNoticia = deleteNoticia;
 
-/**
- * Obtener todas las noticias en tiempo real (Firestore)
- */
+// renderizar tabla de noticias
 function renderNoticias(noticias) {
     const tabla = document.getElementById('tablaNoticias');
     if (!tabla) return;
@@ -706,7 +651,29 @@ function renderNoticias(noticias) {
 
     // Construir filas de forma simple
     tabla.innerHTML = noticias.map(n => {
-        const fechaFormato = n.fecha instanceof Date ? n.fecha.toLocaleDateString() : new Date(n.fecha).toLocaleDateString();
+        let fechaFormato = '';
+        if (n.fecha) {
+          const f = String(n.fecha);
+          if (/^\d{4}-\d{2}-\d{2}/.test(f)) {
+            // Si es string YYYY-MM-DD, parsear y formatear
+            const fechaObj = new Date(f + 'T00:00:00');
+            fechaFormato = fechaObj.toLocaleDateString('es-ES');
+          } else if (n.fecha instanceof Date) {
+            fechaFormato = n.fecha.toLocaleDateString('es-ES');
+          } else {
+            try {
+              const fechaObj = new Date(n.fecha);
+              if (!isNaN(fechaObj.getTime())) {
+                fechaFormato = fechaObj.toLocaleDateString('es-ES');
+              } else {
+                fechaFormato = f;
+              }
+            } catch (e) {
+              fechaFormato = f;
+            }
+          }
+        }
+        
         return `
             <tr>
                 <td>${n.titulo}</td>
@@ -733,10 +700,7 @@ async function loadNoticias() {
     }
 }
 
-/**
- * Editar una noticia
- * @param {string} noticiaId - ID de la noticia
- */
+// Editar una noticia
 async function editarNoticia(noticiaId) {
     try {
         const noticia = await obtenerNoticiaPorId(noticiaId);
@@ -744,8 +708,28 @@ async function editarNoticia(noticiaId) {
         document.getElementById('descripcionNoticia').value = noticia.descripcion || '';
         document.getElementById('escritosNoticia').value = noticia.autor || '';
         
-        const fechaObj = noticia.fecha instanceof Date ? noticia.fecha : new Date(noticia.fecha);
-        document.getElementById('fechaNoticia').value = fechaObj.toISOString().split('T')[0];
+        // Leer fecha como string y validar formato
+        let fechaValue = '';
+        if (noticia.fecha) {
+          const fecha = String(noticia.fecha).trim();
+          // Validar que sea formato YYYY-MM-DD
+          if (/^\d{4}-\d{2}-\d{2}/.test(fecha)) {
+            // Extraer solo YYYY-MM-DD si tiene más caracteres
+            fechaValue = fecha.substring(0, 10);
+          } else {
+            // Intentar convertir desde Date
+            try {
+              const fechaObj = noticia.fecha instanceof Date ? noticia.fecha : new Date(noticia.fecha);
+              if (!isNaN(fechaObj.getTime())) {
+                fechaValue = fechaObj.toISOString().split('T')[0];
+              }
+            } catch (e) {
+              // Si falla, dejar vacío
+              fechaValue = '';
+            }
+          }
+        }
+        document.getElementById('fechaNoticia').value = fechaValue;
 
         const form = document.getElementById('formNoticias');
         form.dataset.editingId = noticiaId;
@@ -763,10 +747,7 @@ async function editarNoticia(noticiaId) {
     }
 }
 
-/**
- * Eliminar una noticia
- * @param {string} noticiaId - ID de la noticia
- */
+// Eliminar una noticia
 async function deleteNoticia(noticiaId) {
     if (!confirm('¿Estás seguro de que quieres eliminar esta noticia?')) {
         return;
